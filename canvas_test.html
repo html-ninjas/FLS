@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Canvas test
+    </title>
+  </head>
+  <body>
+    <canvas
+      onclick="krug(event)"
+      id="canvas"
+      width="700"
+      height="400"
+      style="border:2px solid #d3d3d3;"
+    >
+    </canvas>
+    <script>
+      var lista = [];
+      var a = 0;
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+
+      function circle(x, y) {
+        ctx.fillStyle = "yellow";
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+      }
+
+      function krug(event) {
+        var x = event.x;
+        var y = event.y;
+
+        x -= canvas.offsetLeft;
+        y -= canvas.offsetTop;
+        ctx.fillStyle = "yellow";
+        circle(x, y);
+        console.log("x: " + x + " y: " + y);
+
+        lista.push([x, y]);
+
+        console.log(lista);
+
+        if (lista.length > 1) {
+          var lista1 = lista[a];
+          var prvi1 = lista1[0];
+          var drugi1 = lista1[1];
+          var lista2 = lista[a + 1];
+          var prvi2 = lista2[0];
+          var drugi2 = lista2[1];
+          ctx.moveTo(prvi1, drugi1);
+          ctx.lineTo(prvi2, drugi2);
+          ctx.stroke();
+          a = a + 1;
+          ctx.fillStyle = "yellow";
+          circle(prvi1, drugi1);
+          circle(prvi2, drugi2);
+        }
+      }
+    </script>
+  </body>
+</html>
