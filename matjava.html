@@ -4,10 +4,10 @@
     <script>
       var x1 = 0;
       var y1 = 0;
-      var x2 = 2;
+      var x2 = 2 * Math.sqrt(3);
       var y2 = 2;
-      var x3 = 2;
-      var y3 = 1;
+      var x3 = 0;
+      var y3 = 2;
 
       var x_1 = x2 - x1;
       var y_1 = y2 - y1;
@@ -20,15 +20,31 @@
       var k1 = y_1 / x_1;
       var k2 = y_2 / x_2;
 
-      var alfa = Math.abs((k2 - k1) / (1 - k1 * k2));
+      function angle(k) {
+        if (k === Infinity) {
+          return 90;
+        } else if (k === -Infinity) {
+          return 270;
+        } else {
+          return (Math.atan(k) * 180) / Math.PI;
+        }
+      }
 
-      var kut = Math.atan(alfa);
+      if (angle(k1) === angle(k2)) {
+        kut = 0;
+      } else if (angle(k1) > angle(k2)) {
+        kut = angle(k1) - angle(k2);
+      } else {
+        kut = angle(k2) - angle(k1);
+      }
+
+      if (kut > 180) {
+        kut -= 360;
+      }
 
       console.log(l1);
       console.log(l2);
-      console.log(alfa);
-      console.log(k1);
-      console.log(k2);
+      console.log(kut);
     </script>
   </body>
 </html>
