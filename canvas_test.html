@@ -14,7 +14,10 @@
     </div>
 
     <div style="display: flex;">
-      <div style="position: relative; display: inline-block;">
+      <div
+        id="canvasDivisor"
+        style="position: relative; display: inline-block;"
+      >
         <canvas
           onclick="krug(event)"
           id="canvas"
@@ -83,10 +86,8 @@
     var x = event.x;
     var y = event.y;
 
-    //x -= canvas.offsetLeft;
-    //y -= canvas.offsetTop;
-    x -= 10;
-    y -= 66;
+    x -= canvasDivisor.offsetLeft;
+    y -= canvasDivisor.offsetTop;
     ctx.fillStyle = "yellow";
     circle(ctx, x, y);
     console.log("x: " + x + " y: " + y);
