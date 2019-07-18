@@ -1,7 +1,6 @@
 function onSumbit(event) {
   var x1 = document.getElementById("x1").value;
   var y1 = document.getElementById("y1").value;
-  var result = "";
   event.preventDefault();
   var x1 = document.getElementById("x1").value;
   var y1 = document.getElementById("y1").value;
