@@ -97,19 +97,14 @@
     console.log(lista);
 
     if (lista.length > 1) {
-      var lista1 = lista[a];
-      var prvi1 = lista1[0];
-      var drugi1 = lista1[1];
-      var lista2 = lista[a + 1];
-      var prvi2 = lista2[0];
-      var drugi2 = lista2[1];
-      ctx.moveTo(prvi1, drugi1);
-      ctx.lineTo(prvi2, drugi2);
+      ctx.moveTo(lista[a][0], lista[a][1]);
+      ctx.lineTo(lista[a + 1][0], lista[a + 1][1]);
       ctx.stroke();
-      a = a + 1;
+
       ctx.fillStyle = "yellow";
-      circle(ctx, prvi1, drugi1);
-      circle(ctx, prvi2, drugi2);
+      circle(ctx, lista[a][0], lista[a][1]);
+      circle(ctx, lista[a + 1][0], lista[a + 1][1]);
+      a = a + 1;
     }
 
     var k = lista[lista.length - 1];
