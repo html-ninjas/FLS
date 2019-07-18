@@ -1,6 +1,12 @@
 <html>
   <head> </head>
   <body>
+    <form id="calcForm" action="">
+      <input id="x1" type="number" />
+      <input id="x2" type="number" />
+      <input type="submit" />
+    </form>
+    <div id="result"></div>
     <script>
       var x1 = 0;
       var y1 = 0;
@@ -41,6 +47,26 @@
       if (kut > 180) {
         kut -= 360;
       }
+
+      function logResults(e) {
+        console.log(e);
+        e.preventDefault();
+        console.log(l1);
+        console.log(l2);
+        console.log(kut);
+        return false;
+      }
+
+      function numberChange(e) {
+        document.getElementById("result").innerText =
+          parseInt(x1Element.value) + parseInt(x2Element.value);
+      }
+
+      document.getElementById("calcForm").addEventListener("submit", logResults);
+      var x1Element = document.getElementById("x1");
+      x1Element.addEventListener("input", numberChange);
+      var x2Element = document.getElementById("x2");
+      x2Element.addEventListener("input", numberChange);
 
       console.log(l1);
       console.log(l2);
