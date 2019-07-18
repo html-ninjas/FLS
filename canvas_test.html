@@ -83,8 +83,10 @@
     var x = event.x;
     var y = event.y;
 
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
+    //x -= canvas.offsetLeft;
+    //y -= canvas.offsetTop;
+    x -= 10;
+    y -= 27;
     ctx.fillStyle = "yellow";
     circle(ctx, x, y);
     console.log("x: " + x + " y: " + y);
