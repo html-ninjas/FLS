@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Canvas test
+    </title>
+    <link rel="stylesheet" href="canvas_navigation_bar.css" />
+  </head>
+  <body>
+    <div style="display: flex;">
+      <div style="position: relative; display: inline-block;">
+        <canvas
+          onclick="onClick(event)"
+          id="canvas"
+          width="800"
+          height="400"
+          style="border:2px solid #d3d3d3;"
+        >
+        </canvas>
+      </div>
+      <div
+        style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+      >
+        <ol></ol>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  function resize() {
+    const width = Math.floor(document.querySelector("body").clientWidth * 0.7);
+    const aspect = 2;
+    // document.querySelector("canvas").width = width;
+    // document.querySelector("canvas").height = width / aspect;
+  }
+  document.querySelector("body").onresize = resize;
+  resize();
+
+  var lista = [];
+  var a = 0;
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var i = 1;
+  var output = "";
+
+  // FUNKCIJA crta krug
+  function circle(canvasContext, x, y) {
+    canvasContext.fillStyle = "yellow";
+    canvasContext.beginPath();
+    canvasContext.arc(x, y, 5, 0, 2 * Math.PI);
+    canvasContext.stroke();
+    canvasContext.fill();
+    canvasContext.fillStyle = "yellow";
+  }
+
+  //FUNKCIJA odreduje x i y (plus ispis)
+  function coord(canvasContext, event) {
+    console.log(event);
+    var x = event.x;
+
+    var y = event.y;
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+    circle(canvasContext, x, y);
+    console.log("x: " + x + " y: " + y);
+    lista.push([x, y]);
+    console.log(lista);
+  }
+  function lists(lista, a) {
+    if (lista.length > 1) {
+      ctx.moveTo(lista[a][0], lista[a][1]);
+      ctx.lineTo(lista[a + 1][0], lista[a + 1][1]);
+      ctx.stroke();
+
+      ctx.fillStyle = "yellow";
+      circle(ctx, lista[a][0], lista[a][1]);
+      circle(ctx, lista[a + 1][0], lista[a + 1][1]);
+      a = a + 1;
+    }
+  }
+
+  //FUNKCIJA ispisuje listu
+  function listList(i, lista) {
+    var k = lista[lista.length - 1];
+    output += `<li id="a${i}">(${k})</li>`;
+    console.log(i);
+    document.querySelector("ol").innerHTML = output;
+    i = i + 1;
+  }
+
+  function onClick(event) {
+    coord(ctx, event);
+    lists(ctx, lista, a);
+    listList(i, lista);
+  }
+</script>
