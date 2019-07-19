@@ -19,7 +19,7 @@
         style="position: relative; display: inline-block;"
       >
         <canvas
-          onclick="krug(event)"
+          onclick="onCanvasClick(event)"
           id="canvas"
           width="800"
           height="400"
@@ -33,85 +33,6 @@
         <ol></ol>
       </div>
     </div>
+    <script src="skripta.js"></script>
   </body>
 </html>
-
-<script>
-  function circle(canvasContext, x, y) {
-    canvasContext.fillStyle = "yellow";
-    canvasContext.beginPath();
-    canvasContext.arc(x, y, 5, 0, 2 * Math.PI);
-    canvasContext.stroke();
-    canvasContext.fill();
-  }
-
-  window.onload = function() {
-    var img = new Image();
-    img.src = "http://fll.memphisfirstteams.org/files/2019/04/Capture.jpg";
-
-    img.onload = function() {
-      fill_canvas(img);
-    };
-
-    function fill_canvas(img) {
-      console.log(canvas, canvas.width, canvas.height);
-      img.width = canvas.width;
-      img.height = canvas.height;
-
-      ctx.globalAlpha = 0.5;
-
-      ctx.drawImage(img, 0, 0);
-    }
-  };
-
-  var lista = [];
-  var a = 0;
-  var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext("2d");
-  var i = 1;
-  var output = "";
-
-  function resize() {
-    const width = Math.floor(document.querySelector("body").clientWidth * 0.7);
-    const aspect = 2;
-
-    // document.querySelector("canvas").width = width;
-    // document.querySelector("canvas").height = width / aspect;
-  }
-
-  document.querySelector("body").onresize = resize;
-  resize();
-
-  function krug(event) {
-    var x = event.x;
-    var y = event.y;
-
-    x -= canvasDivisor.offsetLeft;
-    y -= canvasDivisor.offsetTop;
-    ctx.fillStyle = "yellow";
-    circle(ctx, x, y);
-    console.log("x: " + x + " y: " + y);
-
-    lista.push([x, y]);
-
-    console.log(lista);
-
-    if (lista.length > 1) {
-      ctx.moveTo(lista[a][0], lista[a][1]);
-      ctx.lineTo(lista[a + 1][0], lista[a + 1][1]);
-      ctx.stroke();
-
-      ctx.fillStyle = "yellow";
-      circle(ctx, lista[a][0], lista[a][1]);
-      circle(ctx, lista[a + 1][0], lista[a + 1][1]);
-      a = a + 1;
-    }
-
-    var k = lista[lista.length - 1];
-
-    output += `<li id="a${i}">(${k})</li>`;
-    console.log(i);
-    document.querySelector("ol").innerHTML = output;
-    i = i + 1;
-  }
-</script>
