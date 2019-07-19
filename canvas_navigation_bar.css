@@ -25,3 +25,8 @@
 .topnav a.help {
   float: right;
 }
+
+img {
+  
+  imageobject.style.MozOpacity=0.5;
+}
