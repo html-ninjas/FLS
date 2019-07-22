@@ -1,36 +1,55 @@
-.topnav {
-  background-color: teal;
-  overflow: hidden;
+.margins {
+  padding: 30px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
 }
 
-.topnav a {
+.topnav {
+  flex-direction: row;
+  display: flex;
+  font-size: 15px;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  line-height: 1.78px;
+  padding: 0px 0px 30px 0px;
+}
+
+.navItemLeft {
+  border-bottom: 3px solid black;
+  display: flex;
+  width: fit-content;
+}
+
+.navItemRight {
+  margin-left: auto;
+}
+
+.navItem > a {
   float: left;
-  color: #f2f2f2;
+  color: #000000;
   text-align: center;
   padding: 14px 64px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 .topnav a:hover {
-  background-color: #ceecf5;
   color: black;
-}
-
-.topnav a.active {
-  background-color: #4caf50;
-  color: white;
 }
 
 .topnav a.help {
   float: right;
 }
 
+.buttons {
+  padding: 0px 0px 30px 0px;
+}
+
 .ClearPath,
 .AddAction,
 .Undo {
-  width: 117px;
-  height: 34px;
   border-radius: 4px;
   border: solid 1px #000000;
   font-size: 15px;
@@ -38,4 +57,14 @@
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   padding: 8px, 24px, 8px, 24px;
+  outline: none;
+}
+
+button[disabled] {
+  opacity: 0.25;
+}
+
+button {
+  display: inline-block;
+  padding: 24px, 8px;
 }
