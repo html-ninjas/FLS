@@ -25,6 +25,7 @@ function drawLine(canvasContext, pointA, pointB) {
   canvasContext.beginPath();
   canvasContext.strokeStyle = "red";
   canvasContext.lineWidth = 5;
+
   canvasContext.moveTo(pointA[0], pointA[1]);
   canvasContext.lineTo(pointB[0], pointB[1]);
   canvasContext.stroke();
@@ -48,6 +49,7 @@ var ctx = canvas.getContext("2d");
 var i = 1;
 var output = "";
 var img = new Image();
+
 img.src =
   "https://raw.githubusercontent.com/html-ninjas/FLS/master/matcropped.jpg";
 
