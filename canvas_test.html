@@ -38,3 +38,61 @@
     <script src="skripta.js"></script>
   </body>
 </html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      FLS page
+    </title>
+    <link rel="stylesheet" href="canvas_navigation_bar.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="margins">
+      <div class="topnav">
+        <div class="navItemLeft">
+          <div class="navItem"><a class="active" href="#home">FLS</a></div>
+          <div class="navItem"><a class="about" href="#About">About</a></div>
+        </div>
+        <div class="navItemRight">
+          <div class="navItem"><a class="help" href="#Help">Help</a></div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="AddAction" type="button">Add action</button>
+
+        <button class="Undo" type="button" disabled>Undo</button>
+
+        <button class="ClearPath" type="button" onclick="ClearPath(ctx, img)">
+          Clear Path
+        </button>
+      </div>
+
+      <div style="display: flex;">
+        <div
+          id="canvasDivisor"
+          style="position: relative; display: inline-block;"
+        >
+          <canvas
+            onclick="onCanvasClick(event)"
+            id="canvas"
+            width="800"
+            height="400"
+            style="border:2px solid #d3d3d3;"
+          >
+          </canvas>
+        </div>
+        <div
+          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+        >
+          <ol></ol>
+        </div>
+      </div>
+    </div>
+    <script src="skripta.js"></script>
+  </body>
+</html>
