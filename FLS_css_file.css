@@ -1,0 +1,55 @@
+.margins {
+  padding: 30px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+.topnav {
+  flex-direction: row;
+  display: flex;
+  font-size: 15px;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  line-height: 1.78px;
+  padding: 0px 0px 30px 0px;
+}
+.navItemLeft {
+  border-bottom: 3px solid black;
+  display: flex;
+  width: fit-content;
+}
+.navItemRight {
+  margin-left: auto;
+}
+.navItem > a {
+  float: left;
+  color: #000000;
+  text-align: center;
+  padding: 14px 64px;
+  text-decoration: none;
+  font-size: 18px;
+}
+.topnav a:hover {
+  color: black;
+}
+.topnav a.help {
+  float: right;
+}
+.buttons {
+  padding: 0px 0px 30px 0px;
+}
+button {
+  border-radius: 4px;
+  border: solid 1px #000000;
+  font-size: 15px;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  padding: 8px 24px;
+  outline: none;
+  margin-right: 18px;
+}
+button[disabled] {
+  opacity: 0.25;
+}

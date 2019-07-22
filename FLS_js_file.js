@@ -5,6 +5,14 @@ function clearCanvas(canvasContext, img) {
   canvasContext.globalAlpha = 1;
 }
 
+function addLiElement(listId, x, y) {
+  var getOrderedList = document.getElementById(listId);
+  var newLi = document.createElement("li");
+  var textInLi = document.createTextNode(`(${x},${y})`);
+  newLi.appendChild(textInLi);
+  getOrderedList.appendChild(newLi);
+}
+
 function drawCircle(canvasContext, point) {
   canvasContext.beginPath();
   canvasContext.fillStyle = "yellow";
@@ -66,10 +74,35 @@ function onCanvasClick(event) {
 
   points.push([x, y]);
   redraw(ctx, img, points);
+  addLiElement("orderedList", x, y);
+  update(points);
+}
 
-  var k = points[points.length - 1];
-  output += `<li id="a${i}">(${k})</li>`;
-  console.log(i);
-  document.querySelector("ol").innerHTML = output;
-  i = i + 1;
+function undoButton(ctx, img, points) {
+  points.pop();
+  redraw(ctx, img, points);
+  var ol = document.getElementById("orderedList");
+  var liToKill = ol.childNodes[points.length];
+  liToKill.parentNode.removeChild(liToKill);
+  update(points);
+}
+
+function ClearPath(canvasContext, img) {
+  clearCanvas(canvasContext, img);
+  points.splice(0, points.length);
+  document.querySelector("ol").innerHTML = "";
+  update(points);
+}
+
+function update(points) {
+  if (points.length === 0) {
+    document.getElementById("Undo").setAttribute("disabled", "");
+  } else {
+    document.getElementById("Undo").removeAttribute("disabled");
+  }
+  if (points.length === 0) {
+    document.getElementById("clearPath").setAttribute("disabled", "");
+  } else {
+    document.getElementById("clearPath").removeAttribute("disabled");
+  }
 }

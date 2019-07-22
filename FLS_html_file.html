@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      FLS page
+    </title>
+    <link rel="stylesheet" href="FLS_css_file.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="margins">
+      <div class="topnav">
+        <div class="navItemLeft">
+          <div class="navItem"><a class="active" href="#home">FLS</a></div>
+          <div class="navItem"><a class="about" href="#About">About</a></div>
+        </div>
+        <div class="navItemRight">
+          <div class="navItem"><a class="help" href="#Help">Help</a></div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button id="AddAction" type="button">Add action</button>
+        <button
+          id="Undo"
+          type="button"
+          onclick="undoButton(ctx, img, points)"
+          disabled
+        >
+          Undo
+        </button>
+        <button
+          id="clearPath"
+          type="button"
+          onclick="ClearPath(ctx, img)"
+          disabled
+        >
+          Clear Path
+        </button>
+      </div>
+      <div style="display: flex;">
+        <div
+          id="canvasDivisor"
+          style="position: relative; display: inline-block;"
+        >
+          <canvas
+            onclick="onCanvasClick(event)"
+            id="canvas"
+            width="800"
+            height="400"
+            style="border:2px solid #d3d3d3;"
+          >
+          </canvas>
+        </div>
+        <div
+          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+        >
+          <ol id="orderedList"></ol>
+        </div>
+      </div>
+    </div>
+    <script src="FLS_js_file.js"></script>
+  </body>
+</html>
