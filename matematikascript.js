@@ -1,7 +1,7 @@
 function onSumbit(event) {
+  event.preventDefault();
   var x1 = document.getElementById("x1").value;
   var y1 = document.getElementById("y1").value;
-  event.preventDefault();
   var x1 = document.getElementById("x1").value;
   var y1 = document.getElementById("y1").value;
   var x2 = document.getElementById("x2").value;
@@ -64,18 +64,27 @@ function onReset(event) {
 document.querySelector("form").onsubmit = onSumbit;
 document.querySelector("form").onreset = onReset;
 
-function downloadFile(filename, text) {
-  var element = document.createElement("a");
+function getResult() {
+  var x1 = document.getElementById("x1").value;
+  var y1 = document.getElementById("y1").value;
+  var x2 = document.getElementById("x2").value;
+  var y2 = document.getElementById("y2").value;
+  var x3 = document.getElementById("x3").value;
+  var y3 = document.getElementById("y3").value;
+
+  return x1, y1, x2, y2, x3, y3;
+}
+
+function onChange() {
+  const res = getResult();
+  console.log(res);
+  var element = document.getElementById("downloadLink");
   element.setAttribute(
     "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    "data:text/plain;charset=utf-8," + encodeURIComponent(res)
   );
-  element.setAttribute("download", filename);
+}
 
-  element.style.display = "none";
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
+function preventAction(event) {
+  return false;
 }
