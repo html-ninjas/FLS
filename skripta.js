@@ -10,7 +10,13 @@ function drawCircle(canvasContext, point) {
   canvasContext.fillStyle = "yellow";
   canvasContext.strokeStyle = "black";
   canvasContext.lineWidth = 2;
-  canvasContext.arc(point[0], point[1], 5, 0, 2 * Math.PI);
+  canvasContext.arc(
+    point.coordinates[0],
+    point.coordinates[1],
+    5,
+    0,
+    2 * Math.PI
+  );
   canvasContext.fill();
   canvasContext.stroke();
 }
@@ -22,13 +28,23 @@ function drawPoints(canvasContext, points) {
 }
 
 function drawLine(canvasContext, pointA, pointB) {
-  canvasContext.beginPath();
-  canvasContext.strokeStyle = "red";
-  canvasContext.lineWidth = 5;
+  if (pointB.direction === "forwards") {
+    canvasContext.beginPath();
+    canvasContext.strokeStyle = "red";
+    canvasContext.lineWidth = 5;
 
-  canvasContext.moveTo(pointA[0], pointA[1]);
-  canvasContext.lineTo(pointB[0], pointB[1]);
-  canvasContext.stroke();
+    canvasContext.moveTo(pointA.coordinates[0], pointA.coordinates[1]);
+    canvasContext.lineTo(pointB.coordinates[0], pointB.coordinates[1]);
+    canvasContext.stroke();
+  } else {
+    canvasContext.beginPath();
+    canvasContext.strokeStyle = "blue";
+    canvasContext.lineWidth = 5;
+
+    canvasContext.moveTo(pointA.coordinates[0], pointA.coordinates[1]);
+    canvasContext.lineTo(pointB.coordinates[0], pointB.coordinates[1]);
+    canvasContext.stroke();
+  }
 }
 
 function drawLines(canvasContext, points) {
@@ -64,12 +80,20 @@ function onCanvasClick(event) {
   x -= canvasDivisor.offsetLeft;
   y -= canvasDivisor.offsetTop;
 
-  points.push([x, y]);
+  if (event.shiftKey) {
+    points.push({ coordinates: [x, y], direction: "backwards" });
+    console.log(points);
+    console.log("Shift");
+  } else {
+    points.push({ coordinates: [x, y], direction: "forwards" });
+    console.log("No shift");
+  }
   redraw(ctx, img, points);
+
+  //console.log(points);
 
   var k = points[points.length - 1];
   output += `<li id="a${i}">(${k})</li>`;
-  console.log(i);
   document.querySelector("ol").innerHTML = output;
   i = i + 1;
 }
