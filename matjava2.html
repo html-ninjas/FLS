@@ -5,26 +5,17 @@
   <body>
     <form id="calcForm">
       <p>
-        x:<input id="x1" type="number" value="" /> y:<input
-          id="y1"
-          type="number"
-          value=""
-        />
+        x:<input id="x1" type="number" value="" onchange="onChange()" />
+        y:<input id="y1" type="number" value="" onchange="onChange()" />
       </p>
 
       <p>
-        x:<input id="x2" type="number" value="" /> y:<input
-          id="y2"
-          type="number"
-          value=""
-        />
+        x:<input id="x2" type="number" value="" onchange="onChange()" />
+        y:<input id="y2" type="number" value="" onchange="onChange()" />
       </p>
       <p>
-        x:<input id="x3" type="number" value="" /> y:<input
-          id="y3"
-          type="number"
-          value=""
-        />
+        x:<input id="x3" type="number" value="" onchange="onChange()" />
+        y:<input id="y3" type="number" value="" onchange="onChange()" />
       </p>
       <input type="submit" />
       <input type="reset" value="Add new" />
@@ -34,7 +25,7 @@
     <p id="result2"></p>
     <p id="result3"></p>
     <p>
-      <a id="downloadLink" onclick="downloadFile(event)">Download</a>
+      <a id="downloadLink" download="file.txt">Download</a>
     </p>
     <script src="matematikascript.js"></script>
   </body>
