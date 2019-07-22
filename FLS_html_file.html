@@ -4,7 +4,7 @@
     <title>
       FLS page
     </title>
-    <link rel="stylesheet" href="canvas_navigation_bar.css" />
+    <link rel="stylesheet" href="FLS_css_file.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
       rel="stylesheet"
@@ -23,11 +23,11 @@
       </div>
 
       <div class="buttons">
-        <button class="AddAction" type="button">Add action</button>
+        <button id="AddAction" type="button">Add action</button>
 
-        <button class="Undo" type="button" disabled>Undo</button>
+        <button id="Undo" type="button" disabled>Undo</button>
 
-        <button class="ClearPath" type="button" onclick="ClearPath(ctx, img)">
+        <button id="ClearPath" type="button" onclick="ClearPath(ctx, img)">
           Clear Path
         </button>
       </div>
@@ -49,10 +49,10 @@
         <div
           style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
         >
-          <ol></ol>
+          <ol id="orderedList"></ol>
         </div>
       </div>
     </div>
-    <script src="skripta.js"></script>
+    <script src="FLS_js_file.js"></script>
   </body>
 </html>
