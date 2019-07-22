@@ -87,7 +87,7 @@ function undoButton(ctx, img, points) {
   update(points);
 }
 
-function ClearPath(canvasContext, img) {
+function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
   points.splice(0, points.length);
   document.querySelector("ol").innerHTML = "";
@@ -105,4 +105,18 @@ function update(points) {
   } else {
     document.getElementById("clearPath").removeAttribute("disabled");
   }
+}
+
+function openModal() {
+  document.querySelector(".modal").classList.add("active");
+  document.querySelector(".backdrop").classList.add("active");
+}
+
+function closeModal() {
+  document.querySelector(".modal").classList.remove("active");
+  document.querySelector(".backdrop").classList.remove("active");
+}
+function confirmModal() {
+  closeModal();
+  clearPath(ctx, img);
 }

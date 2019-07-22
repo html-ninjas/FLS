@@ -9,8 +9,17 @@
       href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
       rel="stylesheet"
     />
+    <meta charset="UTF-8" />
   </head>
   <body>
+    <div class="backdrop"></div>
+    <div class="modal">
+      <p>Are you sure you want to clear path?</p>
+      <p class="paragraph">This action is permanent and cannot be reversed.</p>
+      <button class="button" onclick="confirmModal()">Yes</button>
+      <button class="button" onclick="closeModal()">No</button>
+    </div>
+
     <div class="margins">
       <div class="topnav">
         <div class="navItemLeft">
@@ -31,12 +40,8 @@
         >
           Undo
         </button>
-        <button
-          id="clearPath"
-          type="button"
-          onclick="ClearPath(ctx, img)"
-          disabled
-        >
+
+        <button id="clearPath" type="button" onclick="openModal()" disabled>
           Clear Path
         </button>
       </div>
