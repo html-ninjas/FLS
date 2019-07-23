@@ -71,8 +71,49 @@ function getResult() {
   var y2 = document.getElementById("y2").value;
   var x3 = document.getElementById("x3").value;
   var y3 = document.getElementById("y3").value;
+  var x_1 = x2 - x1;
+  var y_1 = y2 - y1;
+  var x_2 = x3 - x2;
+  var y_2 = y3 - y2;
+  var l1 = Math.sqrt(x_1 * x_1 + y_1 * y_1);
+  var l2 = Math.sqrt(x_2 * x_2 + y_2 * y_2);
+  var k1 = y_1 / x_1;
+  var k2 = y_2 / x_2;
 
-  return x1, y1, x2, y2, x3, y3;
+  function angle(k) {
+    if (k === Infinity) {
+      return 90;
+    } else if (k === -Infinity) {
+      return 270;
+    } else {
+      return (Math.atan(k) * 180) / Math.PI;
+    }
+  }
+
+  if (angle(k1) === angle(k2)) {
+    kut = 0;
+  } else if (angle(k1) > angle(k2)) {
+    kut = angle(k1) - angle(k2);
+  } else {
+    kut = angle(k2) - angle(k1);
+  }
+
+  if (kut > 180) {
+    kut -= 360;
+  }
+  var result1 = "";
+  var result2 = "";
+  var result3 = "";
+
+  result1 += l1;
+  result2 += l2;
+  result3 += kut;
+
+  var a = ""
+  for()
+  a +=
+
+  return `wheel size promjer\nspeed\naxle length\nbackwards motors\nnumber of movements\n${result1}\n${result2}\n${result3}\n`;
 }
 
 function onChange() {
