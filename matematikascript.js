@@ -1,10 +1,89 @@
 var j = 0;
-var x;
-var y;
-var xco = [];
-var yco = [];
 
-function onSumbit(event) {
+var start = 0;
+var points = [];
+var lengths = [];
+var vectorAngles = [];
+var angles = [];
+var vectors = [];
+
+function calculateLength(pointA, pointB) {
+  var xdistance = pointB[0] - pointA[0];
+  var ydistance = pointB[1] - pointA[1];
+  var length = Math.sqrt(xdistance ** 2 + ydistance ** 2);
+  return length;
+}
+
+function calculateLengths(points) {
+  for (var i = 0; i < points.length - 1; i++) {
+    lengths.push(calculateLength(points[i], points[i + 1]));
+  }
+}
+
+function vectorize(points) {
+  for (var i = 0; i < points.length - 1; i++) {
+    vectors.push([
+      points[i + 1][0] - points[i][0],
+      points[i + 1][1] - points[i][1]
+    ]);
+  }
+}
+
+function calculateAngles(vectors) {
+  for (var i = 0; i < vectors.length - 1; i++) {
+    vectorAngles.push(calculateAngle(vectors[i], vectors[i + 1]));
+  }
+}
+
+function calculateInitialAngle(firstPoint, secondPoint) {
+  var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
+  if (document.getElementById("startValue").value == "right") {
+    start =
+      Math.PI / 2 - Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
+  } else {
+    start =
+      Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
+  }
+}
+
+function calculateAngle(vectorA, vectorB) {
+  if (vectorA[1] < 0) {
+    vectorAngle1 =
+      2 * Math.PI -
+      Math.acos(vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2));
+  } else {
+    vectorAngle1 = Math.acos(
+      vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2)
+    );
+  }
+  if (vectorB[1] < 0) {
+    vectorAngle2 =
+      2 * Math.PI -
+      Math.acos(vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2));
+  } else {
+    vectorAngle2 = Math.acos(
+      vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2)
+    );
+  }
+  var finalAngle = vectorAngle2 - vectorAngle1;
+  if (Math.abs(finalAngle) > Math.PI) {
+    if (finalAngle > 0) {
+      finalAngle -= 2 * Math.PI;
+    } else {
+      finalAngle += 2 * Math.PI;
+    }
+  }
+  angles.push(finalAngle);
+  return finalAngle;
+}
+
+function generateLists(points, vectors) {
+  calculateLengths(points);
+  vectorize(points);
+  calculateAngles(vectors);
+}
+
+function onSubmit(event) {
   event.preventDefault();
   j += 1;
 
@@ -14,80 +93,39 @@ function onSumbit(event) {
   document.getElementById("x1").value = "";
   document.getElementById("y1").value = "";
 
-  xco.push(x);
-  yco.push(y);
+  points.push([x, y]);
 
-  function length(x1, y1, x2, y2) {
-    var x_1 = x2 - x1;
-    var y_1 = y2 - y1;
-    var l1 = Math.sqrt(x_1 * x_1 + y_1 * y_1);
-    return l1;
-  }
+  generateLists(points, vectors);
 
-  function trig(x1, y1, x2, y2, x3, y3) {
-    var x_1 = x2 - x1;
-    var y_1 = y2 - y1;
-    var x_2 = x3 - x2;
-    var y_2 = y3 - y2;
-    var k1 = y_1 / x_1;
-    var k2 = y_2 / x_2;
-    function angle(k) {
-      if (k === Infinity) {
-        return 90;
-      } else if (k === -Infinity) {
-        return 270;
-      } else {
-        return (Math.atan(k) * 180) / Math.PI;
-      }
-    }
-    if (angle(k1) === angle(k2)) {
-      kut = 0;
-    } else if (angle(k1) > angle(k2)) {
-      kut = angle(k1) - angle(k2);
-    } else {
-      kut = angle(k2) - angle(k1);
-    }
-
-    if (kut > 180) {
-      kut = Math.abs(kut - 360);
-    }
-    return kut;
-  }
-
-  if (j == 1) {
-  }
   if (j == 2) {
+    calculateInitialAngle(points[0], points[1]);
     var node1 = document.createElement("li");
-    var textnode1 = document.createTextNode(
-      length(xco[0], yco[0], xco[1], yco[1])
-    );
+    var textnode1 = document.createTextNode((start / Math.PI) * 180);
     node1.appendChild(textnode1);
     document.getElementById("list").appendChild(node1);
+
+    var node3 = document.createElement("li");
+    var textnode3 = document.createTextNode(lengths[lengths.length - 1]);
+    node3.appendChild(textnode3);
+    document.getElementById("list").appendChild(node3);
   }
   if (j > 2) {
     var node2 = document.createElement("li");
     var textnode2 = document.createTextNode(
-      -1 *
-        trig(
-          xco[j - 3],
-          yco[j - 3],
-          xco[j - 2],
-          yco[j - 2],
-          xco[j - 1],
-          yco[j - 1]
-        )
+      (angles[angles.length - 1] / Math.PI) * -180
     );
     node2.appendChild(textnode2);
     document.getElementById("list").appendChild(node2);
 
     var node3 = document.createElement("li");
-    var textnode3 = document.createTextNode(
-      length(xco[j - 2], yco[j - 2], xco[j - 1], yco[j - 1])
-    );
+    var textnode3 = document.createTextNode(lengths[lengths.length - 1]);
     node3.appendChild(textnode3);
     document.getElementById("list").appendChild(node3);
   }
+  vectors = [];
+  angles = [];
+  vectorAngles = [];
 }
 document.getElementById("x1").value = "";
 document.getElementById("y1").value = "";
-document.querySelector("form").onsubmit = onSumbit;
+document.querySelector("form").onsubmit = onSubmit;
