@@ -5,18 +5,20 @@ function clearCanvas(canvasContext, img) {
   canvasContext.globalAlpha = 1;
 }
 
+function addLiElement(listId, x, y) {
+  var getOrderedList = document.getElementById(listId);
+  var newLi = document.createElement("li");
+  var textInLi = document.createTextNode(`(${x},${y})`);
+  newLi.appendChild(textInLi);
+  getOrderedList.appendChild(newLi);
+}
+
 function drawCircle(canvasContext, point) {
   canvasContext.beginPath();
   canvasContext.fillStyle = "yellow";
   canvasContext.strokeStyle = "black";
   canvasContext.lineWidth = 2;
-  canvasContext.arc(
-    point.coordinates[0],
-    point.coordinates[1],
-    5,
-    0,
-    2 * Math.PI
-  );
+  canvasContext.arc(point[0], point[1], 5, 0, 2 * Math.PI);
   canvasContext.fill();
   canvasContext.stroke();
 }
@@ -28,23 +30,13 @@ function drawPoints(canvasContext, points) {
 }
 
 function drawLine(canvasContext, pointA, pointB) {
-  if (pointB.direction === "forwards") {
-    canvasContext.beginPath();
-    canvasContext.strokeStyle = "red";
-    canvasContext.lineWidth = 5;
+  canvasContext.beginPath();
+  canvasContext.strokeStyle = "red";
+  canvasContext.lineWidth = 5;
 
-    canvasContext.moveTo(pointA.coordinates[0], pointA.coordinates[1]);
-    canvasContext.lineTo(pointB.coordinates[0], pointB.coordinates[1]);
-    canvasContext.stroke();
-  } else {
-    canvasContext.beginPath();
-    canvasContext.strokeStyle = "blue";
-    canvasContext.lineWidth = 5;
-
-    canvasContext.moveTo(pointA.coordinates[0], pointA.coordinates[1]);
-    canvasContext.lineTo(pointB.coordinates[0], pointB.coordinates[1]);
-    canvasContext.stroke();
-  }
+  canvasContext.moveTo(pointA[0], pointA[1]);
+  canvasContext.lineTo(pointB[0], pointB[1]);
+  canvasContext.stroke();
 }
 
 function drawLines(canvasContext, points) {
@@ -80,20 +72,51 @@ function onCanvasClick(event) {
   x -= canvasDivisor.offsetLeft;
   y -= canvasDivisor.offsetTop;
 
-  if (event.shiftKey) {
-    points.push({ coordinates: [x, y], direction: "backwards" });
-    console.log(points);
-    console.log("Shift");
-  } else {
-    points.push({ coordinates: [x, y], direction: "forwards" });
-    console.log("No shift");
-  }
+  points.push([x, y]);
   redraw(ctx, img, points);
+  addLiElement("orderedList", x, y);
+  update(points);
+}
 
-  //console.log(points);
+function undoButton(ctx, img, points) {
+  points.pop();
+  redraw(ctx, img, points);
+  var ol = document.getElementById("orderedList");
+  var liToKill = ol.childNodes[points.length];
+  liToKill.parentNode.removeChild(liToKill);
+  update(points);
+}
 
-  var k = points[points.length - 1];
-  output += `<li id="a${i}">(${k})</li>`;
-  document.querySelector("ol").innerHTML = output;
-  i = i + 1;
+function clearPath(canvasContext, img) {
+  clearCanvas(canvasContext, img);
+  points.splice(0, points.length);
+  document.querySelector("ol").innerHTML = "";
+  update(points);
+}
+
+function update(points) {
+  if (points.length === 0) {
+    document.getElementById("Undo").setAttribute("disabled", "");
+  } else {
+    document.getElementById("Undo").removeAttribute("disabled");
+  }
+  if (points.length === 0) {
+    document.getElementById("clearPath").setAttribute("disabled", "");
+  } else {
+    document.getElementById("clearPath").removeAttribute("disabled");
+  }
+}
+
+function openModal() {
+  document.querySelector(".modal").classList.add("active");
+  document.querySelector(".backdrop").classList.add("active");
+}
+
+function closeModal() {
+  document.querySelector(".modal").classList.remove("active");
+  document.querySelector(".backdrop").classList.remove("active");
+}
+function confirmModal() {
+  closeModal();
+  clearPath(ctx, img);
 }
