@@ -109,11 +109,12 @@ function getResult() {
   result2 += l2;
   result3 += kut;
 
-  var a = ""
-  for()
-  a +=
+  var ourLanguage = "";
+  for (i = 0; i < 1; i++) {
+    ourLanguage += `2\n${result3}\n${result2}\n`;
+  }
 
-  return `wheel size promjer\nspeed\naxle length\nbackwards motors\nnumber of movements\n${result1}\n${result2}\n${result3}\n`;
+  return `wheel size promjer\nspeed\naxle length\nbackwards motors\nnumber of movements\n${ourLanguage}\n`;
 }
 
 function onChange() {
