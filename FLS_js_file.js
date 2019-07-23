@@ -77,6 +77,7 @@ function redraw(canvasContext, img, points) {
 }
 
 var points = [];
+var redoList = [];
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var i = 1;
@@ -166,3 +167,5 @@ function confirmModal() {
   closeModal();
   clearPath(ctx, img);
 }
+
+function redoButton() {}

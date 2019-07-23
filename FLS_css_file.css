@@ -46,11 +46,13 @@ ul {
 
 #Help {
   margin-left: auto;
+  font-weight: bold;
 }
 
 #FLS,
 #AboutUs {
   justify-content: flex-start;
+  font-weight: bold;
 }
 
 button {
@@ -139,4 +141,17 @@ p {
   font-size: 13px;
   text-align: center;
   margin-top: 30px;
+}
+
+.list {
+  width: 236px;
+  height: 304px;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #000000;
 }
