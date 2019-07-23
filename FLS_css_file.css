@@ -1,45 +1,56 @@
-.margins {
-  padding: 30px;
+body {
+  margin: 16px 64px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
+  color: #000000;
 }
 
-.topnav {
+li,
+a {
+  font-size: 18px;
+  color: #000000;
+  text-decoration: none;
+}
+
+ul {
+  padding: 16px 0px;
   flex-direction: row;
   display: flex;
-  font-size: 15px;
-  background-color: #ffffff;
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
+  align-items: center;
   overflow: hidden;
+  text-underline-position: below;
+  margin-top: 16px;
+}
+
+.navbar_links {
+  list-style: none;
+}
+
+.navbar_links li {
+  display: inline-block;
+  margin-right: 32px;
+}
+
+.navbar_links li a {
+  transition: all 0.5s ease 0s;
+}
+
+.navbar_links li a:hover {
+  border-bottom: 3px solid black;
   line-height: 1.78px;
 }
 
-.navItemLeft {
+.navbar_links li a:active {
   border-bottom: 3px solid black;
-  display: flex;
-  width: fit-content;
 }
 
-.navItemRight {
+#Help {
   margin-left: auto;
 }
 
-.navItem > a {
-  float: left;
-  color: #000000;
-  text-align: center;
-  padding: 14px 64px;
-  text-decoration: none;
-  font-size: 18px;
-}
-
-.topnav a:hover {
-  color: black;
-}
-
-.topnav a.help {
-  float: right;
+#FLS,
+#AboutUs {
+  justify-content: flex-start;
 }
 
 button {
@@ -52,10 +63,80 @@ button {
   padding: 8px 24px;
   outline: none;
   margin-right: 18px;
-  margin-top: 48px;
+  margin-top: 32px;
   margin-bottom: 32px;
 }
 
 button[disabled] {
   opacity: 0.25;
+}
+
+.input {
+  border-radius: 4px;
+  border: solid 1px #000000;
+  background-color: #d8d8d8;
+  display: inline-block;
+}
+
+.label {
+  display: inline-block;
+}
+
+.modal {
+  display: none;
+  height: 200px;
+  width: 400px;
+  background-color: #ffffff;
+  color: #000000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modal.active {
+  display: block;
+  z-index: 100;
+}
+.backdrop {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  background-color: #00000080;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.backdrop.active {
+  display: block;
+}
+.button {
+  border-radius: 4px;
+  border: solid 1px #000000;
+  font-size: 15px;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  padding: 8px 24px;
+  outline: none;
+  margin-top: 30px;
+  margin-left: 80px;
+}
+.modal {
+  border: solid 1px #000000;
+  border-radius: 8px;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+p {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+}
+.paragraph {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 30px;
 }

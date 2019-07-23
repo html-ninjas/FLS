@@ -9,29 +9,40 @@
       href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
       rel="stylesheet"
     />
+    <meta charset="UTF-8" />
   </head>
   <body>
-    <div class="margins">
-      <div class="topnav">
-        <div class="navItemLeft">
-          <div class="navItem"><a class="active" href="#home">FLS</a></div>
-          <div class="navItem"><a class="about" href="#About">About</a></div>
-        </div>
-        <div class="navItemRight">
-          <div class="navItem"><a class="help" href="#Help">Help</a></div>
-        </div>
+
+      <div class="backdrop"></div>
+      <div class="modal">
+        <p>Are you sure you want to clear path?</p>
+        <p class="paragraph">This action is permanent and cannot be reversed.</p>
+        <button class="button" onclick="confirmModal()">Yes</button>
+        <button class="button" onclick="closeModal()">No</button>
       </div>
 
+      <nav>
+          <ul class="navbar_links">
+            <li id="FLS"><a href="#home">FLS</a></li>
+            <li id="AboutUs"><a href="#about">About us</a></li>
+            <li id="Help"><a href="#help">Help</a></li>
+          </ul>
+        </nav>
       <div class="buttons">
         <button id="AddAction" type="button">Add action</button>
+        <button
+          id="Undo"
+          type="button"
+          onclick="undoButton(ctx, img, points)"
+          disabled
+        >
+          Undo
+        </button>
 
-        <button id="Undo" type="button" disabled>Undo</button>
-
-        <button id="ClearPath" type="button" onclick="ClearPath(ctx, img)">
+        <button id="clearPath" type="button" onclick="openModal()" disabled>
           Clear Path
         </button>
       </div>
-
       <div style="display: flex;">
         <div
           id="canvasDivisor"
