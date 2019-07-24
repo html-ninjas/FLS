@@ -184,6 +184,9 @@ body {
   margin: 2px;
 }
 
+.move_right {
+  margin-left: auto;
+}
 #align {
   flex-direction: row;
   display: flex;
