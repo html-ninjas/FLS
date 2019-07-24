@@ -39,7 +39,7 @@
           Undo
         </button>
 
-        <button id="redo" type="button" onclick="redoButton()" disabled>Redo</button>
+        <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
 
         <button id="clearPath" type="button" onclick="openModal()" disabled>
           Clear Path
@@ -62,8 +62,8 @@
         <div
           style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
         >
-        <div class="list">List of points:</div>
-          <ol id="orderedList"></ol>
+        <div class="list">List of points:
+          <ol id="orderedList"></ol></div>
         </div>
       </div>
     </div>

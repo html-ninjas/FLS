@@ -2,6 +2,8 @@ function addAction(points) {
   var lastPoint = points[points.length - 1];
   lastPoint.type = "action";
   redraw(ctx, img, points);
+  redoList = [];
+  update(points, redoList);
 }
 
 function clearCanvas(canvasContext, img) {
@@ -117,26 +119,29 @@ function onCanvasClick(event) {
 
   redraw(ctx, img, points);
   addLiElement("orderedList", x, y);
-  update(points);
+  redoList = [];
+  update(points, redoList);
 }
 
 function undoButton(ctx, img, points) {
-  points.pop();
+  var redoElement = points.pop();
+  redoList.push(redoElement);
   redraw(ctx, img, points);
   var ol = document.getElementById("orderedList");
-  var liToKill = ol.childNodes[points.length];
+  var liToKill = ol.childNodes[points.length - 1];
   liToKill.parentNode.removeChild(liToKill);
-  update(points);
+  update(points, redoList);
 }
 
 function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
   points.splice(0, points.length);
   document.querySelector("ol").innerHTML = "";
-  update(points);
+  redoList = [];
+  update(points, redoList);
 }
 
-function update(points) {
+function update(points, redoList) {
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
   } else {
@@ -151,6 +156,11 @@ function update(points) {
     document.getElementById("addAction").setAttribute("disabled", "");
   } else {
     document.getElementById("addAction").removeAttribute("disabled");
+  }
+  if (redoList.length === 0) {
+    document.getElementById("redo").setAttribute("disabled", "");
+  } else {
+    document.getElementById("redo").removeAttribute("disabled");
   }
 }
 
@@ -168,4 +178,14 @@ function confirmModal() {
   clearPath(ctx, img);
 }
 
-function redoButton() {}
+function redoButton(redoList, points) {
+  var undoElement = redoList.pop();
+  points.push(undoElement);
+  addLiElement(
+    "orderedList",
+    undoElement.coordinates[0],
+    undoElement.coordinates[1]
+  );
+  redraw(ctx, img, points);
+  update(points, redoList);
+}
