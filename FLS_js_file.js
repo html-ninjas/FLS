@@ -128,7 +128,7 @@ function undoButton(ctx, img, points) {
   redoList.push(redoElement);
   redraw(ctx, img, points);
   var ol = document.getElementById("orderedList");
-  var liToKill = ol.childNodes[points.length - 1];
+  var liToKill = ol.childNodes[points.length];
   liToKill.parentNode.removeChild(liToKill);
   update(points, redoList);
 }
