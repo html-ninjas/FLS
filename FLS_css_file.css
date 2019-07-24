@@ -5,6 +5,10 @@ body {
   color: #000000;
 }
 
+canvas {
+  margin-bottom: 32.5px;
+}
+
 li,
 a {
   font-size: 18px;
@@ -26,8 +30,12 @@ ul {
   list-style: none;
 }
 
-.navbar_links li {
+.navbar_links li,
+.input_information li {
   display: inline-block;
+}
+
+.navbar_links li {
   margin-right: 32px;
 }
 
@@ -35,24 +43,19 @@ ul {
   transition: all 0.5s ease 0s;
 }
 
-.navbar_links li a:hover {
+.navbar_links li a:hover,
+.navbar_links li a.active {
   border-bottom: 3px solid black;
   line-height: 1.78px;
 }
 
-.navbar_links li a:active {
-  border-bottom: 3px solid black;
-}
-
 #Help {
   margin-left: auto;
-  font-weight: bold;
 }
 
 #FLS,
 #AboutUs {
   justify-content: flex-start;
-  font-weight: bold;
 }
 
 button {
@@ -112,6 +115,7 @@ button[disabled] {
 .backdrop.active {
   display: block;
 }
+
 .button {
   border-radius: 4px;
   border: solid 1px #000000;
@@ -132,7 +136,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
 }
-p {
+.warning {
   font-size: 20px;
   text-align: center;
   margin-top: 40px;
@@ -143,15 +147,38 @@ p {
   margin-top: 30px;
 }
 
-.list {
-  width: 236px;
-  height: 304px;
-  font-family: Roboto;
+.input_information_list {
+  margin-top: 0px;
+  margin-bottom: 16px;
+  padding: 0px;
+}
+
+.input_text {
   font-size: 15px;
+  flex-direction: row;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+}
+
+.input_box {
+  width: 72px;
+  height: 34px;
+  border-radius: 4px;
+  border: solid 1px #000000;
+  background-color: #d8d8d8;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.6;
-  letter-spacing: normal;
-  color: #000000;
+  outline: none;
+  margin-right: 16px;
+  margin-left: 8px;
+}
+
+#time_estimate {
+  box-sizing: border-box;
+  height: 24px;
+  width: 24px;
+  border: 1px solid #ffffff;
+  margin: 2px;
 }

@@ -189,3 +189,5 @@ function redoButton(redoList, points) {
   redraw(ctx, img, points);
   update(points, redoList);
 }
+
+//interpolacija stingova: primjer: `Estimated route time: ${a} s` >> ubacuje se varijabla a (plus neka funkcija koja se mora pozvati - var ol = document.getElementById("orderedList"); )
