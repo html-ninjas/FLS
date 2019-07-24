@@ -153,7 +153,8 @@ body {
   padding: 0px;
 }
 
-.input_text {
+.input_text,
+.order_information {
   font-size: 15px;
   flex-direction: row;
   display: flex;
@@ -181,4 +182,8 @@ body {
   width: 24px;
   border: 1px solid #ffffff;
   margin: 2px;
+}
+
+.move_right {
+  margin-left: auto;
 }

@@ -106,15 +106,12 @@ function onCanvasClick(event) {
       direction: "backwards",
       type: "waypoint"
     });
-    console.log(points);
-    console.log("Shift");
   } else {
     points.push({
       coordinates: [x, y],
       direction: "forwards",
       type: "waypoint"
     });
-    console.log("No shift");
   }
 
   redraw(ctx, img, points);
@@ -189,5 +186,31 @@ function redoButton(redoList, points) {
   redraw(ctx, img, points);
   update(points, redoList);
 }
-
-//interpolacija stingova: primjer: `Estimated route time: ${a} s` >> ubacuje se varijabla a (plus neka funkcija koja se mora pozvati - var ol = document.getElementById("orderedList"); )
+function addCoord() {
+  x = document.getElementById("x_coord").value;
+  y = document.getElementById("y_coord").value;
+  if (x === "" || y === "") {
+  } else {
+    console.log(x, y);
+    if (event.shiftKey) {
+      points.push({
+        coordinates: [x, y],
+        direction: "backwards",
+        type: "waypoint"
+      });
+      addLiElement("orderedList", x, y);
+      redraw(ctx, img, points);
+      update(points, redoList);
+    } else {
+      points.push({
+        coordinates: [x, y],
+        direction: "forwards",
+        type: "waypoint"
+      });
+      addLiElement("orderedList", x, y);
+      redraw(ctx, img, points);
+      update(points, redoList);
+    }
+  }
+  console.log(points);
+}
