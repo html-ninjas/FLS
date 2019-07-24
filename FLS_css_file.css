@@ -45,7 +45,7 @@ ul {
 }
 
 #Help {
-  margin-left: auto;
+  margin-left: 7;
   font-weight: bold;
 }
 
@@ -154,4 +154,25 @@ p {
   line-height: 1.6;
   letter-spacing: normal;
   color: #000000;
+}
+
+.ulNew:empty {
+  display:none
+}
+
+.list ul {
+  list-style-type: disc;
+  flex-direction: column;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  list-style-position: inside;
+  display: block;
+  
+
+}
+
+.liInUl {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+ 
 }
