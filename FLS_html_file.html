@@ -52,7 +52,7 @@
           </canvas>
         </div>
         <div
-          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll; margin-left: auto;"
         >
           <ol id="orderedList"></ol>
         </div>
@@ -69,23 +69,27 @@
             <li class="input_text">Speed: 
                 <input type="text" class="input_box">
               </li>
-              <li class="input_text">Estimated route time: 
+              <li class="input_text" id="align">Estimated route time: 
                   <div id="time_estimate"></div>s
               </li> 
           </ul>
           
-          <ul class="input_information_list"></ul>
+          <ul class="input_information_list">
 
           <li class="input_text">Axle length: 
               <input type="text" class="input_box"></li>
 
-          <li class="input_text">Backwards motors 
+          <li class="input_text" id="align">Backwards motors 
                   <input type="checkbox" checked="checked">
                   <span class="checkmark"></span>
 
             </ul>
 
         </form>
+      </div>
+
+      <div class="generate">
+        <button type="button" class="generateButton">GENERATE</button>
       </div>
 
     <script src="FLS_js_file.js"></script>
