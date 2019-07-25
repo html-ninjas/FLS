@@ -214,3 +214,24 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: bold;
 }
+
+.ulNew:empty {
+  display:none
+}
+
+.list ul {
+  list-style-type: disc;
+  flex-direction: column;
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  list-style-position: inside;
+  display: block;
+  
+
+}
+
+.liInUl {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+ 
+}

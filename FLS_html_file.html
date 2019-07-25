@@ -15,53 +15,45 @@
 
       <div class="backdrop"></div>
       <div class="modal">
-        <p class="warning">Are you sure you want to clear path?</p>
+        <p>Are you sure you want to clear path?</p>
         <p class="paragraph">This action is permanent and cannot be reversed.</p>
         <button class="button" onclick="confirmModal()">Yes</button>
         <button class="button" onclick="closeModal()">No</button>
       </div>
 
-      
       <nav>
           <ul class="navbar_links">
-            <li id="FLS"><a class="active" href="#home">FLS</a></li>
+            <li id="FLS"><a href="#home">FLS</a></li>
             <li id="AboutUs"><a href="#about">About us</a></li>
             <li id="Help"><a href="#help">Help</a></li>
           </ul>
         </nav>
-    <div class="order_information">
-      <div class="buttons">
-        <button id="addAction" type="button" onclick="addAction(points)">Add action</button>
-
-        <button id="Undo" type="button" onclick="undoButton(ctx, img, points)" disabled>Undo</button>
-
-        <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
-
-        <button id="clearPath" type="button" onclick="openModal()" disabled>Clear Path</button>
-      </div>
-
-    <div class="move_right">
-      <div class="input_information">
-        <form>
-          <ul class="input_information_list">
-           
-            <li class="input_text">x:
-              <input type="number" id="x_coord" class="input_box">
-            </li>
-            <li class="input_text">y: 
-                <input type="number" id="y_coord" class="input_box">
-              </li>
-            <li><div class="buttons">
-              <button id="add_point" type="button" onclick="addCoord()">Add</button>
-            </div>
-
-            </li>
-          </ul>
-          </form>
-      </div>
-    </div>
-</div>
-
+        <div class="order_information">
+          <div class="buttons">
+            <button id="addAction" type="button" onclick="addAction(points)">Add action</button>
+            <button id="Undo" type="button" onclick="undoButton(ctx, img, points)" disabled>Undo</button>
+            <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
+            <button id="clearPath" type="button" onclick="openModal()" disabled>Clear Path</button>
+          </div>
+        <div class="move_right">
+          <div class="input_information">
+            <form>
+              <ul class="input_information_list">
+                <li class="input_text">x:
+                  <input type="number" id="x_coord" class="input_box">
+                </li>
+                <li class="input_text">y:
+                    <input type="number" id="y_coord" class="input_box">
+                  </li>
+                <li><div class="buttons">
+                  <button id="add_point" type="button" onclick="addCoord()">Add</button>
+                </div>
+                </li>
+              </ul>
+              </form>
+          </div>
+        </div>
+     </div>
       <div style="display: flex;">
         <div
           id="canvasDivisor"
@@ -77,45 +69,13 @@
           </canvas>
         </div>
         <div
-          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll; margin-left: auto"
+          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
         >
-          <ol id="orderedList"></ol>
+        <div class="list">List of points:
+          <ol id="orderedList"></ol></div>
         </div>
       </div>
-    </div>  
-    
-    <div class="input_information">
-        <form>
-          <ul class="input_information_list">
-           
-            <li class="input_text">Wheel size: 
-              <input type="text" class="input_box">
-            </li>
-            <li class="input_text">Speed: 
-                <input type="text" class="input_box">
-              </li>
-              <li class="input_text" id="align">Estimated route time: 
-                  <div id="time_estimate"></div>s
-              </li> 
-          </ul>
-          
-          <ul class="input_information_list">
-
-          <li class="input_text">Axle length: 
-              <input type="text" class="input_box"></li>
-
-          <li class="input_text" id="align">Backwards motors 
-                  <input type="checkbox" checked="checked">
-                  <span class="checkmark"></span>
-            </ul>
-
-        </form>
-      </div>
-
-      <div class="generate">
-        <button type="button" class="generateButton">GENERATE</button>
-      </div>
-
+    </div>
     <script src="FLS_js_file.js"></script>
   </body>
 </html>

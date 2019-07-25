@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>
+     reee
+   </title>
+   <link rel="stylesheet" href="FLS_css_file.css" />
+   <link
+     href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+     rel="stylesheet"
+   />
+   <meta charset="UTF-8" />
+ </head>
+ <body>
+     <div class="backdrop"></div>
+     <div class="modal">
+       <p>Are you sure you want to clear path?</p>
+       <p class="paragraph">This action is permanent and cannot be reversed.</p>
+       <button class="button" onclick="confirmModal()">Yes</button>
+       <button class="button" onclick="closeModal()">No</button>
+     </div>
+     <nav>
+         <ul class="navbar_links">
+           <li id="FLS"><a href="#home">FLS</a></li>
+           <li id="AboutUs"><a href="#about">About us</a></li>
+           <li id="Help"><a href="#help">Help</a></li>
+         </ul>
+       </nav>
+     <div class="buttons">
+       <button id="addAction" type="button" onclick="addAction(points)" disabled>Add action</button>
+       <button
+         id="Undo"
+         type="button"
+         onclick="undoButton(ctx, img, points)"
+         disabled
+       >
+         Undo
+       </button>
+       <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
+       <button id="clearPath" type="button" onclick="openModal()" disabled>
+         Clear Path
+       </button>
+     </div>
+     <div style="display: flex;">
+       <div
+         id="canvasDivisor"
+         style="position: relative; display: inline-block;"
+       >
+         <canvas
+           onclick="onCanvasClick(event)"
+           id="canvas"
+           width="800"
+           height="400"
+           style="border:2px solid #d3d3d3;"
+         >
+         </canvas>
+       </div>
+       <div
+         style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+       >
+       <div class="list">List of points:
+         <ol id="orderedList"></ol></div>
+       </div>
+     </div>
+   </div>
+   <script src="FLS_js_file.js"></script>
+ </body>
+</html>

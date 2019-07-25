@@ -1,4 +1,15 @@
 function addAction(points) {
+  var orderedListSelect =document.querySelector('ol');
+  var lastLiSelect = orderedListSelect.childNodes[orderedListSelect.childElementCount-1]
+  var UlSelect = lastLiSelect.querySelector('ul');
+  var textInLiInUl = document.createTextNode("[Action]");
+  var liInUl = document.createElement("li")
+  liInUl.setAttribute("class", "liInUl");
+  liInUl.appendChild(textInLiInUl);
+  UlSelect.appendChild(liInUl)
+points[points.length - 1].numberOfActions += 1
+
+
   var lastPoint = points[points.length - 1];
   lastPoint.type = "action";
   redraw(ctx, img, points);
@@ -16,8 +27,15 @@ function clearCanvas(canvasContext, img) {
 function addLiElement(listId, x, y) {
   var getOrderedList = document.getElementById(listId);
   var newLi = document.createElement("li");
+  var newUl = document.createElement("ul");
+  newUl.setAttribute("class", "ulNew");
   var textInLi = document.createTextNode(`(${x},${y})`);
-  newLi.appendChild(textInLi);
+    newLi.appendChild(textInLi);
+    newLi.appendChild(newUl)
+
+
+  
+
   getOrderedList.appendChild(newLi);
 }
 
@@ -104,13 +122,16 @@ function onCanvasClick(event) {
     points.push({
       coordinates: [x, y],
       direction: "backwards",
-      type: "waypoint"
+      type: "waypoint",
+      numberOfActions: 0
+     
     });
   } else {
     points.push({
       coordinates: [x, y],
       direction: "forwards",
-      type: "waypoint"
+      type: "waypoint",
+      numberOfActions: 0
     });
   }
 
@@ -126,7 +147,8 @@ function undoButton(ctx, img, points) {
   redraw(ctx, img, points);
   var ol = document.getElementById("orderedList");
   var liToKill = ol.childNodes[points.length];
-  liToKill.parentNode.removeChild(liToKill);
+  if (points[points.length - 1].numberOfActions > 0){points[points.length - 1].numberOfActions -= 1} else {
+  liToKill.parentNode.removeChild(liToKill);}
   update(points, redoList);
 }
 
