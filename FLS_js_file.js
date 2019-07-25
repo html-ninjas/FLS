@@ -126,8 +126,6 @@ function onCanvasClick(event) {
       numberOfActions: 0
      
     });
-    console.log(points);
-    console.log("Shift");
   } else {
     points.push({
       coordinates: [x, y],
@@ -135,7 +133,6 @@ function onCanvasClick(event) {
       type: "waypoint",
       numberOfActions: 0
     });
-    console.log("No shift");
   }
 
   redraw(ctx, img, points);
@@ -210,4 +207,32 @@ function redoButton(redoList, points) {
   );
   redraw(ctx, img, points);
   update(points, redoList);
+}
+function addCoord() {
+  x = document.getElementById("x_coord").value;
+  y = document.getElementById("y_coord").value;
+  if (x === "" || y === "") {
+  } else {
+    console.log(x, y);
+    if (event.shiftKey) {
+      points.push({
+        coordinates: [x, y],
+        direction: "backwards",
+        type: "waypoint"
+      });
+      addLiElement("orderedList", x, y);
+      redraw(ctx, img, points);
+      update(points, redoList);
+    } else {
+      points.push({
+        coordinates: [x, y],
+        direction: "forwards",
+        type: "waypoint"
+      });
+      addLiElement("orderedList", x, y);
+      redraw(ctx, img, points);
+      update(points, redoList);
+    }
+  }
+  console.log(points);
 }
