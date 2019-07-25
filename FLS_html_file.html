@@ -28,23 +28,32 @@
             <li id="Help"><a href="#help">Help</a></li>
           </ul>
         </nav>
-      <div class="buttons">
-        <button id="addAction" type="button" onclick="addAction(points)" disabled>Add action</button>
-        <button
-          id="Undo"
-          type="button"
-          onclick="undoButton(ctx, img, points)"
-          disabled
-        >
-          Undo
-        </button>
-
-        <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
-
-        <button id="clearPath" type="button" onclick="openModal()" disabled>
-          Clear Path
-        </button>
-      </div>
+        <div class="order_information">
+          <div class="buttons">
+            <button id="addAction" type="button" onclick="addAction(points)">Add action</button>
+            <button id="Undo" type="button" onclick="undoButton(ctx, img, points)" disabled>Undo</button>
+            <button id="redo" type="button" onclick="redoButton(redoList, points)" disabled>Redo</button>
+            <button id="clearPath" type="button" onclick="openModal()" disabled>Clear Path</button>
+          </div>
+        <div class="move_right">
+          <div class="input_information">
+            <form>
+              <ul class="input_information_list">
+                <li class="input_text">x:
+                  <input type="number" id="x_coord" class="input_box">
+                </li>
+                <li class="input_text">y:
+                    <input type="number" id="y_coord" class="input_box">
+                  </li>
+                <li><div class="buttons">
+                  <button id="add_point" type="button" onclick="addCoord()">Add</button>
+                </div>
+                </li>
+              </ul>
+              </form>
+          </div>
+        </div>
+     </div>
       <div style="display: flex;">
         <div
           id="canvasDivisor"
