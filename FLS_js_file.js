@@ -288,14 +288,17 @@ function addCoord() {
 function coordCheck() {
   x = document.getElementById("x_coord").value;
   y = document.getElementById("y_coord").value;
-  if (x <= 236 && y <= 114) {
-    if (x !== "" && y !== "") {
-      document.getElementById("addAction").removeAttribute("disabled");
-    } else {
-      document.getElementById("addAction").setAttribute("disabled", "");
-    }
+
+  if (x == "" || y == "") {
+    document.getElementById("add_point").setAttribute("disabled", "");
   } else {
-    document.getElementById("addAction").setAttribute("disabled", "");
+    if (x <= 236 && y <= 114) {
+      if (x >= 0 && y >= 0) {
+        document.getElementById("add_point").removeAttribute("disabled");
+      }
+    } else {
+      document.getElementById("add_point").setAttribute("disabled", "");
+    }
   }
 }
 
@@ -539,12 +542,4 @@ function scrollSmooth(id) {
 function handleGenerateClick(event) {
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
-}
-
-function on() {
-  document.getElementsByClassName("canvas-overlay").style.display = "block";
-}
-
-function off() {
-  document.getElementsByClassName("canvas-overlay").style.display = "none";
 }
