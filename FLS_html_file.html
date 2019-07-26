@@ -84,15 +84,21 @@
               <ul class="input_information_list">
                 <li class="input_text">
                   x:
-                  <input type="number" id="x_coord" class="input_box" />
+                  <input type="number" id="x_coord" class="input_box" oninput="coordCheck()" />
                 </li>
                 <li class="input_text">
                   y:
-                  <input type="number" id="y_coord" class="input_box" />
+                  <input type="number" id="y_coord" class="input_box" oninput="coordCheck()" />
                 </li>
                 <li>
                   <div class="buttons">
-                    <button id="add_point" type="button" onclick="addCoord()">
+                    <button
+                      id="add_point"
+                      type="button"
+                    
+                      onclick="addCoord()"
+                      disabled
+                    >
                       Add
                     </button>
                   </div>
