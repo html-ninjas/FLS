@@ -13,8 +13,8 @@
   </head>
 
   <body>
-    <div class="backdrop"></div>
-    <div class="modal">
+    <div id="backdrop-modal" class="backdrop"></div>
+    <div id="clear-modal" class="modal" style="display: none;">
       <p>Are you sure you want to clear path?</p>
       <p class="paragraph">This action is permanent and cannot be reversed.</p>
       <button class="button" onclick="confirmModal()">Yes</button>
@@ -38,7 +38,16 @@
 
     <hr noshade="" />
     <div class="canvas-wrapper">
-      <div class="canvas-overlay"></div>
+      <div id="canvas-overlay" class="canvas-overlay">
+        <div id="start-modal" class="modal" style="display: block;">
+          <p><h4>Choose robot starting orientation.</h4></p>
+          <p class="paragraph">
+            You can go and read help <a class="text" href="#help_section">here</a>.
+          </p>
+          <button class="button" onclick="startingUp()">Facing up</button>
+          <button class="button" onclick="startingRight()">Facing right</button>
+        </div>
+      </div>
       <div class="order_information">
         <div class="buttons">
           <button

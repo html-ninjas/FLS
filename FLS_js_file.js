@@ -200,19 +200,38 @@ function update(points, redoList) {
 }
 
 function openModal() {
-  document.querySelector(".modal").classList.add("active");
-  document.querySelector(".backdrop").classList.add("active");
+  document.querySelector(".modal").style.display = "block";
+  document.querySelector("#backdrop").style.display = "block";
   document.querySelector("body").classList.add("modal-no-scroll");
 }
 
 function closeModal() {
-  document.querySelector(".modal").classList.remove("active");
-  document.querySelector(".backdrop").classList.remove("active");
+  document.querySelector("#clear-modal").style.display = "none";
+  document.querySelector("#backdrop").classList.remove("active");
   document.querySelector("body").classList.remove("modal-no-scroll");
 }
 function confirmModal() {
   closeModal();
   clearPath(ctx, img);
+}
+
+function closeStartingModal() {
+  document.querySelector("#start-modal").style.display = "none";
+  document.querySelector("#canvas-overlay").style.display = "none";
+  document.querySelector("body").classList.remove("modal-no-scroll");
+}
+
+function startingUp() {
+  closeStartingModal();
+  clearPath(ctx, img);
+  var facing = "up";
+  console.log(facing);
+}
+function startingRight() {
+  closeStartingModal();
+  clearPath(ctx, img);
+  var facing = "right";
+  console.log(facing);
 }
 
 function redoButton(redoList, points) {
