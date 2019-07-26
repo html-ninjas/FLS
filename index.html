@@ -141,7 +141,7 @@
                 class="input_box"
                 id="wheelSize"
                 value="1"
-                oninput="generateEstimate()"
+                oninput="generateEstimate(speed)"
               />
             </li>
             <li class="input_text">
@@ -151,7 +151,7 @@
                 class="input_box"
                 id="speed"
                 value="1"
-                oninput="generateEstimate()"
+                oninput="generateEstimate(speed)"
               />
             </li>
             <li class="input_text" id="align">
@@ -167,13 +167,13 @@
                 class="input_box"
                 id="axleLength"
                 value="1"
-                oninput="generateEstimate()"
+                oninput="generateEstimate(speed)"
               />
             </li>
             <li class="input_text" id="align">
               Backwards motors
               <input type="checkbox"  id="backwardsMotors" />
-              <span class="checkmark"></span>
+              
             </li>
           </ul>
         </form>

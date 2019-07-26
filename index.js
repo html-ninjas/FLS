@@ -4,7 +4,9 @@ function clearCanvas(canvasContext, img) {
   canvasContext.drawImage(img, 0, 0, 800, 400);
   canvasContext.globalAlpha = 1;
 }
-
+var facing = "up";
+var axleLength = document.getElementById("axleLength").value;
+var backwardsMotors = document.getElementById("backwardsMotors").value;
 var textBox = "";
 var points = [];
 var redoList = [];
@@ -49,7 +51,6 @@ function addLiElement(listId, x, y) {
   var textInLi = document.createTextNode(`(${x},${y}) ${speed}`);
   newLi.appendChild(textInLi);
   newLi.appendChild(newUl);
-
   getOrderedList.appendChild(newLi);
 }
 
@@ -110,11 +111,18 @@ function redraw(canvasContext, img, points) {
   drawPoints(canvasContext, points);
 }
 
+function motorsCheck() {
+  if (document.getElementById("backwardsMotors").checked) {
+    var backwardsMotors = 1;
+  } else {
+    var backwardsMotors = 0;
+  }
+  return backwardsMotors;
+}
+
 function onCanvasClick(event) {
   var x = event.x;
   var y = event.y;
-
-  console.log(x, y, canvasDivisor.offsetLeft, canvasDivisor.offsetTop);
 
   x -= canvasDivisor.offsetLeft + 64 + 1.5;
   y -= canvasDivisor.offsetTop + 85 + 16 - 3;
@@ -146,7 +154,7 @@ function onCanvasClick(event) {
     Math.floor((y / 3.386) * -1 + 114.29)
   );
   redoList = [];
-  // generateLists(points, speed);
+  generateLists(points, speed);
   update(points, redoList);
 }
 
@@ -181,7 +189,7 @@ function clearPath(canvasContext, img) {
 }
 
 function update(points, redoList) {
-  generateEstimate();
+  generateEstimate(speed);
 
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
@@ -235,12 +243,12 @@ function closeStartingModal() {
 function startingUp() {
   closeStartingModal();
   clearPath(ctx, img);
-  var facing = "up";
+  facing = "up";
 }
 function startingRight() {
   closeStartingModal();
   clearPath(ctx, img);
-  var facing = "right";
+  facing = "right";
 }
 
 function redoButton(redoList, points) {
@@ -292,6 +300,7 @@ function addCoord() {
       update(points, redoList);
     }
   }
+  generateLists(points, speed);
 }
 
 function coordCheck() {
@@ -321,151 +330,6 @@ function coordCheck() {
   }
 }
 
-var axleLength = document.getElementById("axleLength").value;
-var backwardsMotors = document.getElementById("backwardsMotors").value;
-
-function calculateLength(pointA, pointB) {
-  var xdistance = pointB[0] - pointA[0];
-  var ydistance = pointB[1] - pointA[1];
-  var length = Math.sqrt(xdistance ** 2 + ydistance ** 2);
-  return length;
-}
-
-function calculateLengths(points) {
-  var lengths = [];
-  for (var i = 0; i < points.length - 1; i++) {
-    if (points[i + 1].direction === "forwards") {
-      lengths.push(
-        calculateLength(points[i].coordinates, points[i + 1].coordinates)
-      );
-    } else {
-      lengths.push(
-        calculateLength(points[i].coordinates, points[i + 1].coordinates)
-      );
-    }
-  }
-  return lengths;
-}
-
-function calculateTotalDistance(lengths) {
-  var totalDistance = 0;
-  if (points.length > 0) {
-    for (var i = 0; i < lengths.length; i++) {
-      totalDistance += Math.abs(lengths[i]);
-    }
-  }
-  return totalDistance;
-}
-
-function vectorize(points) {
-  var vectors = [];
-  for (var i = 0; i < points.length - 1; i++) {
-    vectors.push([
-      points[i + 1].coordinates[0] - points[i].coordinates[0],
-      points[i + 1].coordinates[1] - points[i].coordinates[1]
-    ]);
-  }
-  return vectors;
-}
-
-function calculateInitialAngle(firstPoint, secondPoint) {
-  var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
-  if (document.getElementById("startValue").value == "right") {
-    start =
-      Math.PI / 2 - Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
-  } else {
-    start =
-      Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
-  }
-  return start;
-}
-
-function calculateAngles(vectors, points) {
-  var angles = [];
-  for (var i = 0; i < vectors.length - 1; i++) {
-    var angle = calculateAngle(vectors[i], vectors[i + 1], points, i + 1);
-    angles.push(angle);
-  }
-  return angles;
-}
-
-function calculateAngle(vectorA, vectorB, points, pointNumber) {
-  if (points[pointNumber].direction === points[pointNumber + 1].direction) {
-    if (vectorA[1] < 0) {
-      vectorAngle1 =
-        2 * Math.PI -
-        Math.acos(vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2));
-    } else {
-      vectorAngle1 = Math.acos(
-        vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2)
-      );
-    }
-    if (vectorB[1] < 0) {
-      vectorAngle2 =
-        2 * Math.PI -
-        Math.acos(vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2));
-    } else {
-      vectorAngle2 = Math.acos(
-        vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2)
-      );
-    }
-    var finalAngle = vectorAngle2 - vectorAngle1;
-    if (Math.abs(finalAngle) > Math.PI) {
-      if (finalAngle > 0) {
-        finalAngle -= 2 * Math.PI;
-      } else {
-        finalAngle += 2 * Math.PI;
-      }
-    }
-  } else {
-    vectorB[0] = -vectorB[0];
-    vectorB[1] = -vectorB[1];
-    if (vectorA[1] < 0) {
-      vectorAngle1 =
-        2 * Math.PI -
-        Math.acos(vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2));
-    } else {
-      vectorAngle1 = Math.acos(
-        vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2)
-      );
-    }
-    if (vectorB[1] < 0) {
-      vectorAngle2 =
-        2 * Math.PI -
-        Math.acos(vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2));
-    } else {
-      vectorAngle2 = Math.acos(
-        vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2)
-      );
-    }
-    var finalAngle = vectorAngle2 - vectorAngle1;
-    if (Math.abs(finalAngle) > Math.PI) {
-      if (finalAngle > 0) {
-        finalAngle -= 2 * Math.PI;
-      } else {
-        finalAngle += 2 * Math.PI;
-      }
-    }
-    vectorB[0] = -vectorB[0];
-    vectorB[1] = -vectorB[1];
-  }
-  finalAngle = (finalAngle * 180) / Math.PI;
-  return finalAngle;
-}
-
-function makeTextFile(text) {
-  var data = new Blob([text], { type: "text/plain" });
-  var textFile = null;
-
-  if (textFile !== null) {
-    window.URL.revokeObjectURL(textFile);
-  }
-
-  textFile = window.URL.createObjectURL(data);
-
-  return textFile;
-}
-
 // function generateFile(textBox) {
 //   var anchor = document.createElement("a");
 //   var orderedListSelect = document.querySelector("body");
@@ -474,76 +338,7 @@ function makeTextFile(text) {
 //   anchor.href = makeTextFile(textBox);
 //   orderedListSelect.appendChild(anchor);
 
-//   console.log(anchor);
 // }
-
-function generateLists(points) {
-  lengths = calculateLengths(points);
-
-  vectors = vectorize(points);
-
-  angles = calculateAngles(vectors, points);
-
-  totalDistance = calculateTotalDistance(lengths);
-  var numberOfMovements = points.length - 1;
-
-  var textBox = "";
-
-  textBox += wheelSize;
-  textBox += "\n";
-  textBox += speed;
-  textBox += "\n";
-  textBox += axleLength;
-  textBox += "\n";
-  textBox += backwardsMotors;
-  textBox += "\n";
-  textBox += numberOfMovements;
-  textBox += "\n";
-
-  var start = "pocetnikut";
-
-  if (lengths.lenght > 0) {
-    textBox = textBox + "2" + "\n";
-    textBox = textBox + start.toString() + "\n";
-    textBox = textBox + lengths[0].toString() + "\n";
-
-    for (var i = 0; i < lengths.length - 1; i++) {
-      textBox = textBox + "2" + "\n";
-      textBox = textBox + angles[i].toString() + "\n";
-      textBox = textBox + lengths[i + 1].toString() + "\n";
-    }
-  }
-
-  generateFile(textBox);
-}
-
-function generateEstimate() {
-  var wheelSize = document.getElementById("wheelSize").value;
-  var speed = document.getElementById("speed").value;
-
-  if (wheelSize.length == 0 || speed.length == 0) {
-    var time = "Wrong params";
-  } else {
-    totalDistance = calculateTotalDistance(calculateLengths(points));
-
-    if (speed >= 80) {
-      var rot = 2.24;
-    } else {
-      var rot = 0.027625 * speed;
-    }
-
-    if (points.length === 1) {
-      var time = 0;
-    } else {
-      var number =
-        Math.round(
-          (totalDistance / 3.386 / (wheelSize * Math.PI * rot) + 0.5) * 10
-        ) / 10;
-      var time = `${number}s`;
-    }
-  }
-  document.getElementById("time_estimate").innerHTML = time;
-}
 
 function scrollSmooth(id) {
   const section = document.querySelector(`#${id}`);
@@ -560,6 +355,7 @@ function scrollSmooth(id) {
 function handleGenerateClick(event) {
   var wheelSize = document.getElementById("wheelSize").value;
   var old = document.getElementById("invisibleLink");
+
   if (old) {
     old.remove();
   }

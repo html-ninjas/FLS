@@ -160,9 +160,8 @@ function generateEstimate(speed) {
   document.getElementById("time_estimate").innerHTML = time;
 }
 
-function makeTextBox(points, wheelSize, angles) {
+function makeTextBox(points, wheelSize, angles, speedOfLine) {
   var axleLength = document.getElementById("axleLength").value;
-  var backwardsMotors = document.getElementById("backwardsMotors").value;
 
   if (points.length > 0) {
     var numberOfMovements = points.length - 1;
@@ -177,7 +176,7 @@ function makeTextBox(points, wheelSize, angles) {
   textBox += lineEnding;
   textBox += axleLength;
   textBox += lineEnding;
-  textBox += backwardsMotors;
+  textBox += motorsCheck();
   textBox += lineEnding;
   textBox += numberOfMovements;
   textBox += lineEnding;
@@ -189,17 +188,26 @@ function makeTextBox(points, wheelSize, angles) {
       numberOfActions += 1;
       textBox = textBox + "2" + lineEnding;
       textBox = textBox + angles[i].toString() + lineEnding;
-      textBox = textBox + lengths[i].toString() + lineEnding;
+      textBox =
+        textBox +
+        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
+        lineEnding;
       textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
       textBox += "3" + lineEnding;
       textBox += numberOfActions + lineEnding;
     } else {
       textBox = textBox + "2" + lineEnding;
       textBox = textBox + angles[i].toString() + lineEnding;
-      textBox = textBox + lengths[i].toString() + lineEnding;
+      textBox =
+        textBox +
+        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
+        lineEnding;
       textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
     }
   }
+
+  textBox = textBox.replace(/NaN/g, "0");
+
   if (points[points.length - 1].type == "action") {
     numberOfActions += 1;
     textBox += "3" + lineEnding;
@@ -221,22 +229,21 @@ function makeTextFile(text) {
   return textFile;
 }
 
-function generateFile(points, wheelSize) {
+function generateFile(points, wheelSize, speedOfLine) {
   var anchor = document.createElement("a");
   var orderedListSelect = document.querySelector("ol");
   anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", "cancer");
+  anchor.setAttribute("download", "ugabuga137");
   lengths = calculateLengths(points);
   vectors = vectorize(points);
   angles = calculateAngles(vectors, points);
-  const a = makeTextBox(points, wheelSize, angles);
+  const a = makeTextBox(points, wheelSize, angles, speedOfLine);
   console.log(a);
   anchor.href = makeTextFile(a);
   orderedListSelect.appendChild(anchor);
 }
 
 function generateLists(points, speed) {
-  console.log("bananana");
   lengths = calculateLengths(points);
 
   vectors = vectorize(points);
