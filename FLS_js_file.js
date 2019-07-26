@@ -202,11 +202,13 @@ function update(points, redoList) {
 function openModal() {
   document.querySelector(".modal").classList.add("active");
   document.querySelector(".backdrop").classList.add("active");
+  document.querySelector("body").classList.add("modal-no-scroll");
 }
 
 function closeModal() {
   document.querySelector(".modal").classList.remove("active");
   document.querySelector(".backdrop").classList.remove("active");
+  document.querySelector("body").classList.remove("modal-no-scroll");
 }
 function confirmModal() {
   closeModal();
@@ -413,7 +415,7 @@ function generateFile(textBox) {
   var anchor = document.createElement("a");
   var orderedListSelect = document.querySelector("ol");
   anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", tre);
+  anchor.setAttribute("download", true);
   anchor.href = makeTextFile(textBox);
   orderedListSelect.appendChild(anchor);
 }
@@ -468,6 +470,8 @@ function generateEstimate() {
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
 
+    console.log(totalDistance);
+
     if (speed >= 80) {
       var rot = 2.24;
     } else {
@@ -479,9 +483,7 @@ function generateEstimate() {
     } else {
       var number =
         Math.round(
-          (totalDistance / 3.386 / (wheelSize * Math.PI * rot) +
-            points.length / 2) *
-            10
+          (totalDistance / 3.386 / (wheelSize * Math.PI * rot) + 0.5) * 10
         ) / 10;
       var time = `${number}s`;
     }
@@ -490,7 +492,7 @@ function generateEstimate() {
 }
 
 function scrollSmooth(id) {
-  const section = document.querySelector`(#${id})`;
+  const section = document.querySelector(`#${id}`);
   section.scrollIntoView({ behavior: "smooth" });
 
   setTimeout(() => {
@@ -504,4 +506,12 @@ function scrollSmooth(id) {
 function handleGenerateClick(event) {
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
+}
+
+function on() {
+  document.getElementsByClassName("canvas-overlay").style.display = "block";
+}
+
+function off() {
+  document.getElementsByClassName("canvas-overlay").style.display = "none";
 }
