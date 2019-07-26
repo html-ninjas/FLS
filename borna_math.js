@@ -134,7 +134,7 @@ function calculateAngle(vectorA, vectorB, points, pointNumber) {
 function generateEstimate(speed) {
   var wheelSize = document.getElementById("wheelSize").value;
 
-  if (wheelSize.length == 0 || speed.length == 0) {
+  if (wheelSize.length === 0 || speed.length === 0) {
     var time = "Wrong params";
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
@@ -155,6 +155,7 @@ function generateEstimate(speed) {
             10
         ) / 10;
       var time = `${number}s`;
+      console.log(time);
     }
   }
   document.getElementById("time_estimate").innerHTML = time;
@@ -238,7 +239,7 @@ function generateFile(points, wheelSize, speedOfLine) {
   vectors = vectorize(points);
   angles = calculateAngles(vectors, points);
   const a = makeTextBox(points, wheelSize, angles, speedOfLine);
-  console.log(a);
+
   anchor.href = makeTextFile(a);
   orderedListSelect.appendChild(anchor);
 }

@@ -189,8 +189,6 @@ function clearPath(canvasContext, img) {
 }
 
 function update(points, redoList) {
-  generateEstimate(speed);
-
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
   } else {
