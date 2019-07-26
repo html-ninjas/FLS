@@ -200,14 +200,14 @@ function update(points, redoList) {
 }
 
 function openModal() {
-  document.querySelector(".modal").style.display = "block";
-  document.querySelector("#backdrop").style.display = "block";
+  document.querySelector("#clear-modal").style.display = "block";
+  document.querySelector("#backdrop-modal").style.display = "block";
   document.querySelector("body").classList.add("modal-no-scroll");
 }
 
 function closeModal() {
   document.querySelector("#clear-modal").style.display = "none";
-  document.querySelector("#backdrop").classList.remove("active");
+  document.querySelector("#backdrop-modal").style.display = "none";
   document.querySelector("body").classList.remove("modal-no-scroll");
 }
 function confirmModal() {
