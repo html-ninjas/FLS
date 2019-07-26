@@ -10,6 +10,10 @@ body {
   overflow-y: hidden;
 }
 
+#add_point {
+  margin-right: 0px;
+}
+
 canvas {
   margin-bottom: 32.5px;
 }
@@ -48,6 +52,7 @@ ul {
 }
 #Help {
   margin-left: auto;
+  margin-right: 0px;
 }
 #FLS,
 #AboutUs {
