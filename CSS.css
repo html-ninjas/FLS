@@ -84,7 +84,7 @@ button[disabled] {
   display: inline-block;
 }
 .modal {
-  display: none;
+  display: block;
   height: 200px;
   width: 400px;
   background-color: #ffffff;

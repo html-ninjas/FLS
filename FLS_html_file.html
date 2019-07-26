@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      ree
+      FLS
     </title>
     <link rel="stylesheet" href="CSS.css" />
     <link
@@ -38,7 +38,16 @@
 
     <hr noshade="" />
     <div class="canvas-wrapper">
-      <div class="canvas-overlay"></div>
+      <div class="canvas-overlay">
+        <div class="modal">
+          <p>Are you sure you want to clear path?</p>
+          <p class="paragraph">
+            This action is permanent and cannot be reversed.
+          </p>
+          <button class="button" onclick="confirmModal()">Yes</button>
+          <button class="button" onclick="closeModal()">No</button>
+        </div>
+      </div>
       <div class="order_information">
         <div class="buttons">
           <button
@@ -297,10 +306,12 @@
           List of points will show list of all points and actions you added in
           order from first to last.
           <h4 id="generate">Generate</h4>
-          Left-clicking on "Generate" button will generate text file.
+          Left-clicking on "Generate" button will generate text file.<br />
+          <button onclick="scrollSmooth('FLS')">Back to top</button>
         </div>
       </div>
     </div>
+
     <script src="FLS_js_file.js"></script>
   </body>
 </html>
