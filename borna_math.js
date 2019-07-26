@@ -170,44 +170,46 @@ function makeTextBox(points, wheelSize, angles) {
     var numberOfMovements = 0;
   }
 
+  const lineEnding = String.fromCharCode(13);
+
   textBox = "";
   textBox += wheelSize;
-  textBox += "\n";
+  textBox += lineEnding;
   textBox += axleLength;
-  textBox += "\n";
+  textBox += lineEnding;
   textBox += backwardsMotors;
-  textBox += "\n";
+  textBox += lineEnding;
   textBox += numberOfMovements;
-  textBox += "\n";
+  textBox += lineEnding;
 
   var numberOfActions = 0;
 
   for (var i = 0; i < angles.length; i++) {
     if (points[i].type == "action") {
       numberOfActions += 1;
-      textBox = textBox + "2" + "\n";
-      textBox = textBox + angles[i].toString() + "\n";
-      textBox = textBox + lengths[i].toString() + "\n";
-      textBox = textBox + points[i + 1].speedOfLine.toString() + "\n";
-      textBox += "3" + "\n";
-      textBox += numberOfActions + "\n";
+      textBox = textBox + "2" + lineEnding;
+      textBox = textBox + angles[i].toString() + lineEnding;
+      textBox = textBox + lengths[i].toString() + lineEnding;
+      textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
+      textBox += "3" + lineEnding;
+      textBox += numberOfActions + lineEnding;
     } else {
-      textBox = textBox + "2" + "\n";
-      textBox = textBox + angles[i].toString() + "\n";
-      textBox = textBox + lengths[i].toString() + "\n";
-      textBox = textBox + points[i + 1].speedOfLine.toString() + "\n";
+      textBox = textBox + "2" + lineEnding;
+      textBox = textBox + angles[i].toString() + lineEnding;
+      textBox = textBox + lengths[i].toString() + lineEnding;
+      textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
     }
   }
   if (points[points.length - 1].type == "action") {
     numberOfActions += 1;
-    textBox += "3" + "\n";
-    textBox += numberOfActions + "\n";
+    textBox += "3" + lineEnding;
+    textBox += numberOfActions + lineEnding;
   }
   return textBox;
 }
 
 function makeTextFile(text) {
-  var data = new Blob([text], { type: "text/plain" });
+  var data = new Blob([text], { type: "text/rtf" });
   var textFile = null;
 
   if (textFile !== null) {
