@@ -234,7 +234,7 @@ function generateFile(points, wheelSize, speedOfLine) {
   var anchor = document.createElement("a");
   var orderedListSelect = document.querySelector("ol");
   anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", "ugabuga137");
+  anchor.setAttribute("download", "fajlnejm2");
   lengths = calculateLengths(points);
   vectors = vectorize(points);
   angles = calculateAngles(vectors, points);
