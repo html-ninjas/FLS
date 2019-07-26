@@ -5,6 +5,7 @@ function clearCanvas(canvasContext, img) {
   canvasContext.globalAlpha = 1;
 }
 
+var textBox = "";
 var points = [];
 var redoList = [];
 var redoActionList = [];
@@ -40,11 +41,12 @@ function addAction(points) {
 }
 
 function addLiElement(listId, x, y) {
+  var speed = document.getElementById("speed").value;
   var getOrderedList = document.getElementById(listId);
   var newLi = document.createElement("li");
   var newUl = document.createElement("ul");
   newUl.setAttribute("class", "ulNew");
-  var textInLi = document.createTextNode(`(${x},${y})`);
+  var textInLi = document.createTextNode(`(${x},${y}) ${speed}`);
   newLi.appendChild(textInLi);
   newLi.appendChild(newUl);
 
@@ -112,22 +114,28 @@ function onCanvasClick(event) {
   var x = event.x;
   var y = event.y;
 
-  x -= canvasDivisor.offsetLeft;
-  y -= canvasDivisor.offsetTop;
+  console.log(x, y, canvasDivisor.offsetLeft, canvasDivisor.offsetTop);
+
+  x -= canvasDivisor.offsetLeft + 64 + 1.5;
+  y -= canvasDivisor.offsetTop + 85 + 16 - 3;
+
+  var speed = document.getElementById("speed").value;
 
   if (event.shiftKey) {
     points.push({
       coordinates: [x, y],
       direction: "backwards",
       type: "waypoint",
-      actionsYesOrNo: 0
+      actionsYesOrNo: 0,
+      speedOfLine: speed
     });
   } else {
     points.push({
       coordinates: [x, y],
       direction: "forwards",
       type: "waypoint",
-      actionsYesOrNo: 0
+      actionsYesOrNo: 0,
+      speedOfLine: speed
     });
   }
 
@@ -138,8 +146,8 @@ function onCanvasClick(event) {
     Math.floor((y / 3.386) * -1 + 114.29)
   );
   redoList = [];
+  // generateLists(points, speed);
   update(points, redoList);
-  generateLists(points);
 }
 
 function undoButton(ctx, img, points, redoActionList) {
@@ -150,7 +158,9 @@ function undoButton(ctx, img, points, redoActionList) {
   if (point.actionsYesOrNo === 1) {
     redoList.push({ type: "emptyAction" });
     points[points.length - 1].actionsYesOrNo = 0;
-    liToKill.childNodes[liToKill.childElementCount].remove();
+    var childElementCount = liToKill.childElementCount;
+    var ulToKill = liToKill.getElementsByClassName("ulNew")[0];
+    ulToKill.childNodes[childElementCount - 1].remove();
   } else {
     var redoElement = points.pop();
     redoList.push(redoElement);
@@ -166,6 +176,7 @@ function clearPath(canvasContext, img) {
   points.splice(0, points.length);
   document.querySelector("ol").innerHTML = "";
   redoList = [];
+  textBox = "";
   update(points, redoList);
 }
 
@@ -192,7 +203,7 @@ function update(points, redoList) {
   } else {
     document.getElementById("redo").removeAttribute("disabled");
   }
-  if (points.length >= 0 && points[points.length - 1].actionsYesOrNo === 1) {
+  if (points.length > 0 && points[points.length - 1].actionsYesOrNo === 1) {
     document.getElementById("addAction").setAttribute("disabled", "");
   } else {
     document.getElementById("addAction").removeAttribute("disabled");
@@ -225,13 +236,11 @@ function startingUp() {
   closeStartingModal();
   clearPath(ctx, img);
   var facing = "up";
-  console.log(facing);
 }
 function startingRight() {
   closeStartingModal();
   clearPath(ctx, img);
   var facing = "right";
-  console.log(facing);
 }
 
 function redoButton(redoList, points) {
@@ -291,13 +300,23 @@ function coordCheck() {
 
   if (x == "" || y == "") {
     document.getElementById("add_point").setAttribute("disabled", "");
+    document.getElementById("y_coord").setAttribute("class", "add-point-error");
+    document.getElementById("x_coord").setAttribute("class", "add-point-error");
   } else {
     if (x <= 236 && y <= 114) {
       if (x >= 0 && y >= 0) {
         document.getElementById("add_point").removeAttribute("disabled");
+        document.getElementById("y_coord").setAttribute("class", "input_box");
+        document.getElementById("x_coord").setAttribute("class", "input_box");
       }
     } else {
       document.getElementById("add_point").setAttribute("disabled", "");
+      document
+        .getElementById("y_coord")
+        .setAttribute("class", "add-point-error");
+      document
+        .getElementById("x_coord")
+        .setAttribute("class", "add-point-error");
     }
   }
 }
@@ -447,14 +466,16 @@ function makeTextFile(text) {
   return textFile;
 }
 
-function generateFile(textBox) {
-  var anchor = document.createElement("a");
-  var orderedListSelect = document.querySelector("ol");
-  anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", true);
-  anchor.href = makeTextFile(textBox);
-  orderedListSelect.appendChild(anchor);
-}
+// function generateFile(textBox) {
+//   var anchor = document.createElement("a");
+//   var orderedListSelect = document.querySelector("body");
+//   anchor.setAttribute("id", "invisibleLink");
+//   anchor.setAttribute("download", true);
+//   anchor.href = makeTextFile(textBox);
+//   orderedListSelect.appendChild(anchor);
+
+//   console.log(anchor);
+// }
 
 function generateLists(points) {
   lengths = calculateLengths(points);
@@ -479,8 +500,6 @@ function generateLists(points) {
   textBox += numberOfMovements;
   textBox += "\n";
 
-  console.log(textBox);
-
   var start = "pocetnikut";
 
   if (lengths.lenght > 0) {
@@ -494,6 +513,7 @@ function generateLists(points) {
       textBox = textBox + lengths[i + 1].toString() + "\n";
     }
   }
+
   generateFile(textBox);
 }
 
@@ -505,8 +525,6 @@ function generateEstimate() {
     var time = "Wrong params";
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
-
-    console.log(totalDistance);
 
     if (speed >= 80) {
       var rot = 2.24;
@@ -540,6 +558,12 @@ function scrollSmooth(id) {
 }
 
 function handleGenerateClick(event) {
+  var wheelSize = document.getElementById("wheelSize").value;
+  var old = document.getElementById("invisibleLink");
+  if (old) {
+    old.remove();
+  }
+  generateFile(points, wheelSize);
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
 }

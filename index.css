@@ -303,3 +303,17 @@ h3 {
   border: 1px solid #ffffff;
   margin: 2px;
 }
+
+.add-point-error {
+  width: 72px;
+  height: 34px;
+  border-radius: 4px;
+  border: solid 1px rgb(255, 80, 80);
+  background-color: #d8d8d8;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  outline: none;
+  margin-right: 16px;
+  margin-left: 8px;
+}
