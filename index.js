@@ -287,6 +287,7 @@ function addCoord() {
       redraw(ctx, img, points);
       update(points, redoList);
     }
+    generateEstimate()
   }
 }
 
