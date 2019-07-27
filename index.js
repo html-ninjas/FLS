@@ -519,7 +519,7 @@ function generateEstimate() {
       var rot = 0.027625 * speed;
     }
 
-    if (points.length === 1) {
+    if (points.length === 1 || points.length === 0) {
       var time = 0;
     } else {
       var number =
