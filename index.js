@@ -163,7 +163,7 @@ function undoButton(ctx, img, points, redoActionList) {
 
 function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
-  points.splice(0, points.length);
+  points=[]
   document.querySelector("ol").innerHTML = "";
   redoList = [];
   update(points, redoList);
