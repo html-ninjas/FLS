@@ -17,8 +17,7 @@ var i = 1;
 var output = "";
 var img = new Image();
 
-img.src =
-  "https://raw.githubusercontent.com/html-ninjas/FLS/master/matcropped.jpg";
+img.src = "https://raw.githubusercontent.com/html-ninjas/FLS/master/matcropped.jpg";
 
 window.onload = function() {
   clearCanvas(ctx, img);
@@ -26,8 +25,7 @@ window.onload = function() {
 
 function addAction(points) {
   var orderedListSelect = document.querySelector("ol");
-  var lastLiSelect =
-    orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
+  var lastLiSelect = orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
   var UlSelect = lastLiSelect.querySelector("ul");
   var textInLiInUl = document.createTextNode("[Action]");
   var liInUl = document.createElement("li");
@@ -59,13 +57,7 @@ function drawCircle(canvasContext, point, color) {
   canvasContext.fillStyle = color;
   canvasContext.strokeStyle = "black";
   canvasContext.lineWidth = 2;
-  canvasContext.arc(
-    point.coordinates[0],
-    point.coordinates[1],
-    5,
-    0,
-    2 * Math.PI
-  );
+  canvasContext.arc(point.coordinates[0], point.coordinates[1], 5, 0, 2 * Math.PI);
   canvasContext.fill();
   canvasContext.stroke();
 }
@@ -148,11 +140,7 @@ function onCanvasClick(event) {
   }
 
   redraw(ctx, img, points);
-  addLiElement(
-    "orderedList",
-    Math.floor(x / 3.386),
-    Math.floor((y / 3.386) * -1 + 114.29)
-  );
+  addLiElement("orderedList", Math.floor(x / 3.386), Math.floor((y / 3.386) * -1 + 114.29));
   redoList = [];
   generateLists(points, speed);
   update(points, redoList);
@@ -255,8 +243,7 @@ function redoButton(redoList, points) {
   if (current.type === "emptyAction") {
     points[points.length - 1].actionsYesOrNo = 1;
     var orderedListSelect = document.querySelector("ol");
-    var lastLiSelect =
-      orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
+    var lastLiSelect = orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
     var UlSelect = lastLiSelect.querySelector("ul");
     var textInLiInUl = document.createTextNode("[Action]");
     var liInUl = document.createElement("li");
@@ -318,12 +305,8 @@ function coordCheck() {
       }
     } else {
       document.getElementById("add_point").setAttribute("disabled", "");
-      document
-        .getElementById("y_coord")
-        .setAttribute("class", "add-point-error");
-      document
-        .getElementById("x_coord")
-        .setAttribute("class", "add-point-error");
+      document.getElementById("y_coord").setAttribute("class", "add-point-error");
+      document.getElementById("x_coord").setAttribute("class", "add-point-error");
     }
   }
 }
