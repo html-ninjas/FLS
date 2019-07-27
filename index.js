@@ -197,6 +197,11 @@ function update(points, redoList) {
   } else {
     document.getElementById("addAction").removeAttribute("disabled");
   }
+  if (points.length === 0) {
+    document.getElementById("generate-button").setAttribute("disabled", "");
+  } else {
+    document.getElementById("generate-button").removeAttribute("disabled");
+  }
 }
 
 function openModal() {
