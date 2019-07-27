@@ -42,6 +42,7 @@ function calculateTotalDistance(lengths) {
   
   function calculateInitialAngle(firstPoint, secondPoint) {
     var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
+
     if (facing == "right") {
         if(firstPoint[1] > secondPoint[1] || firstPoint[1] == secondPoint[1]){
             vecAngle = Math.PI/2 - Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
@@ -61,7 +62,7 @@ function calculateTotalDistance(lengths) {
             start = -Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
         }
     }
-    else{
+    if (facing == "up"){
         if(firstPoint[0] < secondPoint[0] || firstPoint[0] == secondPoint[0]){
             vecAngle = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
 
@@ -82,6 +83,7 @@ function calculateTotalDistance(lengths) {
           }
         }
     }
+
     start = start / Math.PI * 180
     return start;
 }
