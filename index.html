@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      FLS
+    </title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div id="backdrop-modal" class="backdrop"></div>
+    <div id="clear-modal" class="modal" style="display: none;">
+      <p>Are you sure you want to clear path?</p>
+      <p class="paragraph">This action is permanent and cannot be reversed.</p>
+      <button class="button" onclick="confirmModal()">Yes</button>
+      <button class="button" onclick="closeModal()">No</button>
+    </div>
+    <nav>
+      <ul class="navbar_links">
+        <li id="FLS">
+          <a
+            class="active"
+            href="index.html"
+            >FLS</a
+          >
+        </li>
+        <li id="AboutUs">
+          <a href="about_us.html">About us</a>
+        </li>
+        <li id="Help"><a href="#help_section">Help</a></li>
+      </ul>
+    </nav>
+
+    <hr noshade="" />
+    <div class="canvas-wrapper">
+      <div id="canvas-overlay" class="canvas-overlay">
+        <div id="start-modal" class="modal" style="display: block;">
+          <p><h4>Choose robot starting orientation.</h4></p>
+          <p class="paragraph">
+            You can go and read help <a class="text" href="#help_section">here</a>.
+          </p>
+          <button class="button" onclick="startingUp()">Facing up</button>
+          <button class="button" onclick="startingRight()">Facing right</button>
+        </div>
+      </div>
+      <div class="order_information">
+        <div class="buttons">
+          <button
+            id="addAction"
+            type="button"
+            onclick="addAction(points)"
+            disabled
+          >
+            Add action
+          </button>
+          <button
+            id="Undo"
+            type="button"
+            onclick="undoButton(ctx, img, points, redoActionList)"
+            disabled
+          >
+            Undo
+          </button>
+          <button
+            id="redo"
+            type="button"
+            onclick="redoButton(redoList, points)"
+            disabled
+          >
+            Redo
+          </button>
+          <button id="clearPath" type="button" onclick="openModal()" disabled>
+            Clear Path
+          </button>
+        </div>
+        <div class="move_right">
+          <div class="input_information">
+            <form>
+              <ul class="input_information_list">
+                <li class="input_text">
+                  x:
+                  <input type="number" id="x_coord" class="input_box" oninput="coordCheck()" />
+                </li>
+                <li class="input_text">
+                  y:
+                  <input type="number" id="y_coord" class="input_box" oninput="coordCheck()" />
+                </li>
+                <li>
+                  <div class="buttons">
+                    <button
+                      id="add_point"
+                      type="button"
+                    
+                      onclick="addCoord()"
+                      disabled
+                    >
+                      Add
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;">
+        <div
+          id="canvasDivisor"
+          style="position: relative; display: inline-block;"
+        >
+          <canvas
+            onclick="onCanvasClick(event)"
+            id="canvas"
+            width="800"
+            height="387"
+            style="border:2px solid #d3d3d3;"
+          >
+          </canvas>
+        </div>
+        <div
+          style="position: relative; display: inline-block; height: 400px; width: 30%; overflow-y: scroll;"
+        >
+          <div class="list">
+            <div id="listOfPoints">List of points:</div>
+            <ol id="orderedList"></ol>
+          </div>
+        </div>
+      </div>
+      <div class="input_information">
+        <form>
+          <ul class="input_information_list">
+            <li class="input_text">
+              Wheel size:
+              <input
+                type="number"
+                class="input_box"
+                id="wheelSize"
+                value = 5.5
+                
+                oninput="generateEstimate(speed)"
+              />
+            </li>
+            <li class="input_text">
+              Speed:
+              <input
+                type="number"
+                class="input_box"
+                id="speed"
+                value = 50
+                
+                oninput="generateEstimate(speed)"
+              />
+            </li>
+            <li class="input_text" id="align">
+              Estimated route time:
+              <div id="time_estimate"></div>
+            </li>
+          </ul>
+          <ul class="input_information_list">
+            <li class="input_text">
+              Axle length:
+              <input
+                type="number"
+                class="input_box"
+                id="axleLength"
+                value = 12
+                
+                oninput="generateEstimate(speed)"
+              />
+            </li>
+            <li class="input_text" id="align">
+              Backwards motors
+              <input type="checkbox"  id="backwardsMotors" />
+              
+            </li>
+          </ul>
+        </form>
+      </div>
+      <div class="generate">
+        <button
+          id="create"
+          type="button"
+          class="generateButton"
+          onclick="handleGenerateClick(event)"
+        >
+          GENERATE
+        </button>
+      </div>
+    </div>
+
+    <hr noshade="" />
+
+    <div style="position: relative;">
+      <div id="help_section" class="helpFLS">
+        <h1>Help</h1>
+        <div class="text_section">
+          <h3 id="reqs">Requirements</h3>
+          To use this program you will need:<br />
+          Our custom EV3
+          <a class="section-link" href="!--" DODAJ LINK KADA BORNA NAPRAVI --
+            >"MyBlock"</a
+          ><br />
+          Access to the internet and the FLS website (this one)
+        </div>
+        <div class="text_section">
+          <h3 id="setup">Setup</h3>
+          After page loads, you will be offered to choose starting orientation
+          of your robot by clicking on one of 2 buttons "Up" or "Right". Next
+          part of the setup is filling "Wheel size", "Speed" and "Axle length"
+          boxes so you can see your estimated route time.<br />
+          If you want this program to work properly you have to scroll to the
+          <b>TOP</b>.
+        </div>
+        <div class="text_section">
+          <h3 id="points">Points</h3>
+          There are 2 types of points in this program:
+          <h4 class="section-link" id="yellow_point">Yellow point</h4>
+          Yellow point is also normal point and you will probably use it more
+          than a
+          <a class="text" onclick="scrollSmooth('green_point')">green </a>one
+          You can add a yellow point by left-clicking on the picture on the
+          board or by pressing and holding shift and left-clicking. Difference
+          between point with and without shift is that if you add 2 or more
+          points without shift program will make
+          <a class="text" onclick="scrollSmooth('red_line')">red line</a>
+          and if you connect with at least 1 point with shift program will make
+          <a class="text" onclick="scrollSmooth('blue_line')">blue line</a>.
+          <h4 class="section-link" id="green_point">Green point</h4>
+          Green point is action point. To get a green point you have to press
+          <a class="text" onclick="scrollSmooth('add_actionb')">"Add action"</a>
+          button.
+        </div>
+        <div class="text_section">
+          <h3 id="lines">Lines</h3>
+          There are also 2 types of lines in this program:
+          <h4 id="red_line">Red line</h4>
+          If you have a
+          <a class="text" onclick="scrollSmooth('yellow_point')">red line</a>
+          it means that your robot will go forward from one point to another. If
+          there is an angle between 2 red lines your robot will turn towards the
+          next point to go forward.
+          <h4 if="section-link" id="blue_line">Blue line</h4>
+          If you have a
+          <a class="text" onclick="scrollSmooth('yellow_point')">blue line</a>
+          it means that your robot will go backwards from one point to another.
+          If there is an angle between 2 blue lines or 1 red and 1 blue your
+          robot will turn away from next point to go backwards.
+        </div>
+        <div class="text_section">
+          <h3 id="buttons">Buttons</h3>
+          There are 6 buttons which you can use by left-clicking on them:
+          <h4 class="section-link" id="add_actionb">Add action</h4>
+          Add action button is used to make a pause in the program so you can
+          put action for your robot if there is some specific task to do.
+          <h4 class="section-link" id="undo_button">Undo</h4>
+          Left-clicking on the "Undo" button will remove the last point, line or
+          action you added.
+          <h4 class="section-link" id="redo_button">Redo</h4>
+          Left-clicking on the "Redo" button will return the last point, line or
+          action which was removed by
+          <a class="text" onclick="scrollSmooth('undo_button')">"Undo"</a>
+          button
+          <h4 id="clear_path">Clear path</h4>
+          Left-clicking on "Clear path" will clear all points, lines and actions
+          and after you clear you will not be able to use
+          <a class="text" onclick="scrollSmooth('redo_button')">"Redo"</a>
+          button.
+          <h4 id="add_button">Add</h4>
+          First, fill x and y boxes with desired coordinates and then press the
+          "Add" button to add points. Also, you can remove manually added points
+          with
+          <a class="text" onclick="scrollSmooth('undo_button')">"Undo"</a>
+          button
+        </div>
+        <div class="text_section">
+          <h3 id="inputs">Inputs</h3>
+          There are 3 inputs except for x and y, one checkbox and estimated
+          route time.
+          <h4 class="section-link" id="wheel_diameter">Wheel diameter</h4>
+          Write the size of your wheel so you can get
+          <a class="text" onclick="scrollSmooth('est_time')"
+            >estimated route time.</a
+          >
+          Write wheel diameter in cm.
+          <h4 class="section-link" id="speed_input">Speed</h4>
+          Write motor speed you use in EV3 to get
+          <a class="text" onclick="scrollSmooth('est_time')"
+            >estimated route time.</a
+          >
+          <h4 class="section-link" id="est_time">Estimated route time</h4>
+          Estimated route time is calculated with
+          <a class="text" onclick="scrollSmooth('wheel_diameter')"
+            >wheel diameter</a
+          >,
+          <a class="text" onclick="scrollSmooth('speed_input')"
+            >speed of your motors</a
+          >
+          and total length of route. This does not include the duration of
+          actions because you will be programing them by yourself.
+          <h4 id="axle_length">Axle length</h4>
+          Write axle length (distance between two wheels). Write axle length in
+          cm.
+          <h4 id="backwards_motors">Backwards motors</h4>
+          If your robot is built so that it drives forwards with negative power
+          then you should check the "Backwards motors" checkbox.
+        </div>
+        <div class="text_section">
+          <h3 id="list_&_generate">List and generate</h3>
+          <h4 id="list_help">List of points</h4>
+          List of points will show list of all points and actions you added in
+          order from first to last.
+          <h4 id="generate">Generate</h4>
+          Left-clicking on "Generate" button will generate text file.<br />
+          <button onclick="scrollSmooth('FLS')">Back to top</button>
+        </div>
+      </div>
+    </div>
+    <script src="borna_math.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

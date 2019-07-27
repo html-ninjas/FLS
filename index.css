@@ -1,0 +1,319 @@
+body {
+    margin: 16px 64px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    color: #000000;
+  }
+  
+  .modal-no-scroll {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+  
+  #add_point {
+    margin-right: 0px;
+  }
+  
+  canvas {
+    margin-bottom: 32.5px;
+  }
+  li,
+  a {
+    font-size: 18px;
+    color: #000000;
+    text-decoration: none;
+  }
+  ul {
+    padding: 16px 0px;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-underline-position: below;
+    margin-top: 16px;
+  }
+  .navbar_links {
+    list-style: none;
+  }
+  .navbar_links li,
+  .input_information li {
+    display: inline-block;
+  }
+  .navbar_links li {
+    margin-right: 32px;
+  }
+  .navbar_links li a {
+    transition: all 0.5s ease 0s;
+  }
+  .navbar_links li a:hover,
+  .navbar_links li a.active {
+    border-bottom: 3px solid black;
+    line-height: 1.78px;
+  }
+  #Help {
+    margin-left: auto;
+    margin-right: 0px;
+  }
+  #FLS,
+  #AboutUs {
+    justify-content: flex-start;
+  }
+  button {
+    border-radius: 4px;
+    border: solid 1px #000000;
+    font-size: 15px;
+    background-color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    padding: 8px 24px;
+    outline: none;
+    margin-right: 18px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  button[disabled] {
+    opacity: 0.25;
+  }
+  .input {
+    border-radius: 4px;
+    border: solid 1px #000000;
+    background-color: #d8d8d8;
+    display: inline-block;
+  }
+  .label {
+    display: inline-block;
+  }
+  .modal {
+    display: block;
+    height: 200px;
+    width: 400px;
+    background-color: #ffffff;
+    color: #000000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  .modal.active {
+    display: block;
+    z-index: 100;
+  }
+  .backdrop {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    background-color: #00000080;
+    width: 100%;
+    height: 100vmax;
+    z-index: 100;
+  }
+  
+  .backdrop.active {
+    display: block;
+  }
+  
+  .canvas-wrapper {
+    height: 100%;
+    position: relative;
+  }
+  
+  .canvas-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0, 0, 0, 0.5);
+    display: block;
+    z-index: 100;
+    cursor: not-allowed;
+  }
+  
+  .modal {
+    border: solid 1px #000000;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+  }
+  body {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+  }
+  .warning {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .paragraph {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .input_information_list {
+    margin-top: 0px;
+    margin-bottom: 16px;
+    padding: 0px;
+  }
+  .input_text,
+  .order_information {
+    font-size: 15px;
+    flex-direction: row;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+  }
+  .input_box {
+    width: 56px;
+    height: 24px;
+    border-radius: 4px;
+    border: solid 1px #000000;
+    background-color: #d8d8d8;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    outline: none;
+    margin-right: 16px;
+    margin-left: 8px;
+    padding: 5px 8px;
+  }
+  #time_estimate {
+    box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    border: 1px solid #ffffff;
+    margin: 2px;
+  }
+  .move_right {
+    margin-left: auto;
+  }
+  #align {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .generateButton,
+  .generate {
+    align-self: center;
+    width: 138px;
+    height: 48px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 100px;
+  }
+  .generateButton {
+    border-radius: 4px;
+    border: solid 1px #000000;
+    padding: 8px 24px;
+    font-size: 18px;
+    background-color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+  }
+  .ulNew:empty {
+    display: none;
+  }
+  .list ul {
+    list-style-type: disc;
+    flex-direction: column;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    list-style-position: inside;
+    display: block;
+  }
+  .liInUl {
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+  }
+  .helpFLS {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #000000;
+    align-content: center;
+  }
+  hr {
+    height: 1.5px;
+    color: black;
+    background-color: black;
+    border: none;
+  }
+  section:link,
+  a.text {
+    text-decoration: underline;
+    font-family: Roboto;
+    font-size: 15px;
+    transition: color 0.4s;
+    color: #265c83;
+  }
+  a.text:link,
+  a.text:visited {
+    color: #265c83;
+  }
+  a.text:hover {
+    color: #7fdbff;
+  }
+  a.text:active {
+    transition: color 0.3s;
+    color: #007be6;
+  }
+  h4 {
+    margin-bottom: 4px;
+  }
+  h3 {
+    margin-bottom: 6px;
+    border-bottom: 3px solid black;
+    font-weight: normal;
+    width: fit-content;
+    font-weight: bold;
+  }
+  .text_section {
+    padding-bottom: 60px;
+  }
+  .section-link {
+    transition-duration: 0.5s;
+    transform-origin: center;
+  }
+  .scale-animation {
+    color: #3366ff;
+    transform: scale(1.2) translateX(7.5%);
+  }
+  
+  #listOfPoints {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+  }
+  
+  #time_estimate {
+    box-sizing: border-box;
+    height: 20px;
+    width: fit-content;
+    border: 1px solid #ffffff;
+    margin: 2px;
+  }
+  
+  .add-point-error {
+    width: 72px;
+    height: 34px;
+    border-radius: 4px;
+    border: solid 1px rgb(255, 80, 80);
+    background-color: #d8d8d8;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    outline: none;
+    margin-right: 16px;
+    margin-left: 8px;
+  }
