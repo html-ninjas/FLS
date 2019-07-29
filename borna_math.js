@@ -145,15 +145,12 @@ function generateEstimate(speed) {
       var rot = 0.027625 * speed;
     }
 
-    if (points.length === 1) {
+    if (points.length === 1 || points.length === 0) {
       var time = 0;
     } else {
       var number =
-        Math.round(
-          (totalDistance / 3.386 / (wheelSize * Math.PI * rot) +
-            points.length / 2) *
-            10
-        ) / 10;
+        Math.round((totalDistance / 3.386 / (wheelSize * Math.PI * rot)) * 10) /
+        10;
       var time = `${number}s`;
       console.log(time);
     }

@@ -183,6 +183,7 @@ function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
   points.splice(0, points.length);
   document.querySelector("ol").innerHTML = "";
+  points = [];
   redoList = [];
   textBox = "";
   update(points, redoList);
@@ -209,10 +210,18 @@ function update(points, redoList) {
   } else {
     document.getElementById("redo").removeAttribute("disabled");
   }
-  if (points.length > 0 && points[points.length - 1].actionsYesOrNo === 1) {
+  if (
+    (points.length > 0 && points[points.length - 1].actionsYesOrNo === 1) ||
+    points.length === 0
+  ) {
     document.getElementById("addAction").setAttribute("disabled", "");
   } else {
     document.getElementById("addAction").removeAttribute("disabled");
+  }
+  if (points.length === 0) {
+    document.getElementById("create").setAttribute("disabled", "");
+  } else {
+    document.getElementById("create").removeAttribute("disabled", "");
   }
 }
 
