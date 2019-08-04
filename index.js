@@ -4,6 +4,7 @@ function clearCanvas(canvasContext, img) {
   canvasContext.drawImage(img, 0, 0, 800, 400);
   canvasContext.globalAlpha = 1;
 }
+
 var facing = "up";
 var axleLength = document.getElementById("axleLength").value;
 var backwardsMotors = document.getElementById("backwardsMotors").value;
@@ -190,6 +191,8 @@ function clearPath(canvasContext, img) {
 }
 
 function update(points, redoList) {
+  var speed = document.getElementById("speed").value;
+  generateEstimate(speed);
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
   } else {
@@ -283,6 +286,8 @@ function redoButton(redoList, points) {
 
 // TODOOOOOOOOOOO
 function addCoord() {
+  var speed = document.getElementById("speed").value;
+  generateEstimate(speed);
   x = document.getElementById("x_coord").value;
   y = document.getElementById("y_coord").value;
   if (x === "" || y === "") {
