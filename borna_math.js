@@ -131,9 +131,9 @@ function calculateAngle(vectorA, vectorB, points, pointNumber) {
   return finalAngle;
 }
 
-function generateEstimate(speed) {
+function generateEstimate() {
   var wheelSize = document.getElementById("wheelSize").value;
-  console.log(wheelSize);
+  var speed = document.getElementById("speed").value;
 
   if (wheelSize.length === 0 || speed.length === 0) {
     var time = "Wrong params";

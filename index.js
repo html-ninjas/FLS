@@ -192,7 +192,7 @@ function clearPath(canvasContext, img) {
 
 function update(points, redoList) {
   var speed = document.getElementById("speed").value;
-  generateEstimate(speed);
+  generateEstimate();
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
   } else {
@@ -286,8 +286,7 @@ function redoButton(redoList, points) {
 
 // TODOOOOOOOOOOO
 function addCoord() {
-  var speed = document.getElementById("speed").value;
-  generateEstimate(speed);
+  generateEstimate();
   x = document.getElementById("x_coord").value;
   y = document.getElementById("y_coord").value;
   if (x === "" || y === "") {
