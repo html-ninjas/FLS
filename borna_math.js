@@ -212,7 +212,8 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
     textBox += "3" + lineEnding;
     textBox += numberOfActions + lineEnding;
   }
-  return textBox;
+
+  return textBox + String.fromCharCode(10);
 }
 
 function makeTextFile(text) {
