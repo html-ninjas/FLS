@@ -305,8 +305,8 @@ h3 {
 }
 
 .add-point-error {
-  width: 72px;
-  height: 34px;
+  width: 56px;
+  height: 24px;
   border-radius: 4px;
   border: solid 1px rgb(255, 80, 80);
   background-color: #d8d8d8;
@@ -316,4 +316,5 @@ h3 {
   outline: none;
   margin-right: 16px;
   margin-left: 8px;
+  padding: 5px 8px;
 }
