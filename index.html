@@ -42,7 +42,7 @@
         <div id="start-modal" class="modal" style="display: block;">
           <p><h4>Choose robot starting orientation.</h4></p>
           <p class="paragraph">
-            You can go and read help <a class="text" href="#help_section">here</a>.
+            You can go and read help <a class="text" onclick="scrollSmooth('help_link')" href="#help_section">here</a>.
           </p>
           <button class="button" onclick="startingUp()">Facing up</button>
           <button class="button" onclick="startingRight()">Facing right</button>
@@ -198,7 +198,7 @@
 
     <div style="position: relative;">
       <div id="help_section" class="helpFLS">
-        <h1>Help</h1>
+        <h1 id="help_link">Help</h1>
         <div class="text_section">
           <h3 id="reqs">Requirements</h3>
           To use this program you will need:<br />
@@ -239,13 +239,13 @@
         <div class="text_section">
           <h3 id="lines">Lines</h3>
           There are also 2 types of lines in this program:
-          <h4 id="red_line">Red line</h4>
+          <h4 class="section-link" id="red_line">Red line</h4>
           If you have a
           <a class="text" onclick="scrollSmooth('yellow_point')">red line</a>
           it means that your robot will go forward from one point to another. If
           there is an angle between 2 red lines your robot will turn towards the
           next point to go forward.
-          <h4 if="section-link" id="blue_line">Blue line</h4>
+          <h4 class="section-link" id="blue_line">Blue line</h4>
           If you have a
           <a class="text" onclick="scrollSmooth('yellow_point')">blue line</a>
           it means that your robot will go backwards from one point to another.

@@ -183,7 +183,7 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
   var numberOfActions = 0;
 
   for (var i = 0; i < angles.length; i++) {
-    if (points[i].type == "action") {
+    if (points[i].type === "action") {
       numberOfActions += 1;
       textBox = textBox + "2" + lineEnding;
       textBox = textBox + angles[i].toString() + lineEnding;
