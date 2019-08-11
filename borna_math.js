@@ -26,6 +26,7 @@ function calculateLengths(points) {
       );
     }
   }
+
   return lengths;
 }
 
@@ -162,22 +163,26 @@ function generateEstimate() {
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
 
-    if (speed >= 80) {
-      var rot = 2.24;
-    } else {
-      var rot = 0.027625 * speed;
-    }
-
     if (points.length === 1 || points.length === 0) {
       var time = 0;
     } else {
-      var number =
-        Math.round((totalDistance / 3.386 / (wheelSize * Math.PI * rot)) * 10) /
-        10;
-      var time = `${number}s`;
-      console.log(time);
+      var timeForLine = 0;
+      for (var i = 0; i < lengths.length; i++) {
+        if (points[i].speedOfLine >= 80) {
+          var rot = 2.24;
+        } else {
+          var rot = 0.027625 * points[i].speedOfLine;
+        }
+
+        timeForLine += Math.round(
+          lengths[i] / 3.386 / (wheelSize * Math.PI * rot)
+        );
+        console.log(timeForLine);
+        var time = `${timeForLine}s`;
+      }
     }
   }
+  console.log(time);
   document.getElementById("time_estimate").innerHTML = time;
 }
 
@@ -205,8 +210,6 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
   var numberOfActions = 0;
 
   for (var i = 0; i < angles.length; i++) {
-    console.log(angles.length);
-
     if (points[i].actionsYesOrNo === 1) {
       numberOfActions += 1;
       textBox = textBox + "3" + lineEnding;

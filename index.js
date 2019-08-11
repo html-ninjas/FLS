@@ -183,6 +183,7 @@ function undoButton(ctx, img, points, redoActionList) {
 function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
   points.splice(0, points.length);
+
   document.querySelector("ol").innerHTML = "";
   points = [];
   redoList = [];
@@ -192,7 +193,9 @@ function clearPath(canvasContext, img) {
 
 function update(points, redoList) {
   var speed = document.getElementById("speed").value;
+
   generateEstimate();
+
   if (points.length === 0) {
     document.getElementById("Undo").setAttribute("disabled", "");
   } else {
