@@ -135,8 +135,30 @@ function generateEstimate() {
   var wheelSize = document.getElementById("wheelSize").value;
   var speed = document.getElementById("speed").value;
 
-  if (wheelSize.length === 0 || speed.length === 0) {
-    var time = "Wrong params";
+  wheelSize = document.getElementById("wheelSize").value;
+  speed = document.getElementById("speed").value;
+
+  if (wheelSize === "" || speed === "") {
+    var wrongParams = 1;
+    document
+      .getElementById("wheelSize")
+      .setAttribute("class", "add-point-error");
+    document.getElementById("speed").setAttribute("class", "add-point-error");
+  } else {
+    if (wheelSize >= 1 && speed >= 1) {
+      var wrongParams = 0;
+      document.getElementById("wheelSize").setAttribute("class", "input_box");
+      document.getElementById("speed").setAttribute("class", "input_box");
+    } else {
+      var wrongParams = 1;
+      document
+        .getElementById("wheelSize")
+        .setAttribute("class", "add-point-error");
+      document.getElementById("speed").setAttribute("class", "add-point-error");
+    }
+  }
+  if (wrongParams === 1) {
+    var time = "Wrong Parameters";
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
 
@@ -183,17 +205,19 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
   var numberOfActions = 0;
 
   for (var i = 0; i < angles.length; i++) {
-    if (points[i].type === "action") {
+    console.log(angles.length);
+
+    if (points[i].actionsYesOrNo === 1) {
       numberOfActions += 1;
+      textBox = textBox + "3" + lineEnding;
+      textBox = textBox + numberOfActions + lineEnding;
       textBox = textBox + "2" + lineEnding;
       textBox = textBox + angles[i].toString() + lineEnding;
       textBox =
         textBox +
         (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
         lineEnding;
-      textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
-      textBox += "3" + lineEnding;
-      textBox += numberOfActions + lineEnding;
+      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
     } else {
       textBox = textBox + "2" + lineEnding;
       textBox = textBox + angles[i].toString() + lineEnding;
@@ -201,17 +225,13 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
         textBox +
         (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
         lineEnding;
-      textBox = textBox + points[i + 1].speedOfLine.toString() + lineEnding;
+      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
+    }
+    if (points[i].actionsYesOrNo === 1) {
     }
   }
 
   textBox = textBox.replace(/NaN/g, "0");
-
-  if (points[points.length - 1].type == "action") {
-    numberOfActions += 1;
-    textBox += "3" + lineEnding;
-    textBox += numberOfActions + lineEnding;
-  }
 
   return textBox + String.fromCharCode(10);
 }

@@ -341,16 +341,6 @@ function coordCheck() {
   }
 }
 
-// function generateFile(textBox) {
-//   var anchor = document.createElement("a");
-//   var orderedListSelect = document.querySelector("body");
-//   anchor.setAttribute("id", "invisibleLink");
-//   anchor.setAttribute("download", true);
-//   anchor.href = makeTextFile(textBox);
-//   orderedListSelect.appendChild(anchor);
-
-// }
-
 function scrollSmooth(id) {
   const section = document.querySelector(`#${id}`);
   section.scrollIntoView({ behavior: "smooth" });
