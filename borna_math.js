@@ -1,3 +1,6 @@
+var time = 0;
+var rot = 0;
+var wrongParams = 1;
 function calculateTotalDistance(lengths) {
   var totalDistance = 0;
   for (var i = 0; i < lengths.length; i++) {
@@ -22,7 +25,7 @@ function calculateLengths(points) {
       );
     } else {
       lengths.push(
-        -calculateLength(points[i].coordinates, points[i + 1].coordinates)
+        calculateLength(points[i].coordinates, points[i + 1].coordinates)
       );
     }
   }
@@ -147,11 +150,11 @@ function generateEstimate() {
     document.getElementById("speed").setAttribute("class", "add-point-error");
   } else {
     if (wheelSize >= 1 && speed >= 1) {
-      var wrongParams = 0;
+      wrongParams = 0;
       document.getElementById("wheelSize").setAttribute("class", "input_box");
       document.getElementById("speed").setAttribute("class", "input_box");
     } else {
-      var wrongParams = 1;
+      wrongParams = 1;
       document
         .getElementById("wheelSize")
         .setAttribute("class", "add-point-error");
@@ -159,30 +162,27 @@ function generateEstimate() {
     }
   }
   if (wrongParams === 1) {
-    var time = "Wrong Parameters";
+    time = "Wrong Parameters";
   } else {
     totalDistance = calculateTotalDistance(calculateLengths(points));
 
     if (points.length === 1 || points.length === 0) {
-      var time = 0;
+      time = 0;
     } else {
       var timeForLine = 0;
       for (var i = 0; i < lengths.length; i++) {
         if (points[i].speedOfLine >= 80) {
-          var rot = 2.24;
+          rot = 2.24;
         } else {
-          var rot = 0.027625 * points[i].speedOfLine;
+          rot = 0.027625 * points[i].speedOfLine;
         }
-
         timeForLine += Math.round(
           lengths[i] / 3.386 / (wheelSize * Math.PI * rot)
         );
-        console.log(timeForLine);
-        var time = `${timeForLine}s`;
+        time = `${timeForLine}s`;
       }
     }
   }
-  console.log(time);
   document.getElementById("time_estimate").innerHTML = time;
 }
 
