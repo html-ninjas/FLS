@@ -45,11 +45,11 @@ ul {
 .navbar_links li a {
   transition: all 0.5s ease 0s;
 }
-.navbar_links li a:hover,
+/* .navbar_links li a:hover,
 .navbar_links li a.active {
   border-bottom: 3px solid black;
   line-height: 1.78px;
-}
+} */
 #Help {
   margin-left: auto;
   margin-right: 0px;
@@ -318,23 +318,26 @@ h3 {
   margin-left: 8px;
   padding: 5px 8px;
 }
-nav.stroke ul li a,
-nav.fill ul li a {
+
+.navbar_links a {
   position: relative;
 }
-nav.stroke ul li a:after,
-nav.fill ul li a:after {
+
+.navbar_links a::after {
+  content: "";
   position: absolute;
-  bottom: 0;
+  display: block;
+  top: 100%;
+  bottom: -3px;
+  left: 50%;
+  right: 50%;
+  background-color: #000000;
+  transition-duration: 0.3s;
+}
+
+.navbar_links a:hover::after,
+a.active:after {
   left: 0;
   right: 0;
-  margin: auto;
-  width: 0%;
-  content: ".";
-  color: transparent;
-  background: #aaa;
-  height: 1px;
-}
-nav.stroke ul li a:hover:after {
-  width: 100%;
+  transition-duration: 0.3s;
 }
