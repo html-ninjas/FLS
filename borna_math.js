@@ -139,6 +139,8 @@ function generateEstimate() {
   wheelSize = document.getElementById("wheelSize").value;
   speed = document.getElementById("speed").value;
 
+  lengths = calculateLengths(points);
+
   if (wheelSize === "" || speed === "") {
     var wrongParams = 1;
     document
@@ -173,11 +175,12 @@ function generateEstimate() {
         }
 
         timeForLine += Math.round(
-          lengths[i] / 3.386 / (wheelSize * Math.PI * rot)
+          Math.abs(lengths[i]) / 3.386 / (wheelSize * Math.PI * rot)
         );
-        console.log(timeForLine);
-        var time = `${timeForLine}s`;
       }
+
+      console.log(timeForLine);
+      var time = `${timeForLine}s`;
     }
   }
   console.log(time);
