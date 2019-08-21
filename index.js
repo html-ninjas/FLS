@@ -288,17 +288,28 @@ function redoButton(redoList, points) {
 }
 
 // TODOOOOOOOOOOO
-function addCoord() {
-  generateEstimate();
-  x = document.getElementById("x_coord").value;
-  y = document.getElementById("y_coord").value;
+function addCoord(
+  event = undefined,
+  x = undefined,
+  y = undefined,
+  shift = undefined,
+  override = false
+) {
+  if (!override) {
+    x = document.getElementById("x_coord").value;
+    y = document.getElementById("y_coord").value;
+    shift = event.shiftKey;
+  }
+
   if (x === "" || y === "") {
   } else {
-    if (event.shiftKey) {
+    if (shift) {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "backwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
       addLiElement("orderedList", x, y);
       redraw(ctx, img, points);
@@ -307,13 +318,16 @@ function addCoord() {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "forwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
       addLiElement("orderedList", x, y);
       redraw(ctx, img, points);
       update(points, redoList);
     }
   }
+  generateEstimate();
   generateLists(points, speed);
 }
 
@@ -366,4 +380,32 @@ function handleGenerateClick(event) {
   generateFile(points, wheelSize);
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
+}
+
+function generateTestSample(shift) {
+  foobar = [
+    {
+      x: 10,
+      y: 10
+    },
+    {
+      x: 10,
+      y: 40
+    },
+    {
+      x: 40,
+      y: 40
+    },
+    {
+      x: 60,
+      y: 60
+    }
+  ];
+
+  foobar.forEach((item, index) => {
+    setTimeout(
+      () => addCoord(undefined, item.x, item.y, shift, true),
+      index * 200
+    );
+  });
 }

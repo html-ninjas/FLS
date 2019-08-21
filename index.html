@@ -38,7 +38,9 @@
    <div class="canvas-wrapper">
      <div id="canvas-overlay" class="canvas-overlay">
        <div id="start-modal" class="modal" style="display: block;">
-         <p><h4>Choose robot starting orientation.</h4></p>
+         <p>
+            <h4>Choose robot starting orientation.</h4>
+          </p>
          <p class="paragraph">
            You can go and read help <a class="text" onclick="scrollSmooth('help_link')" href="#help_section">here</a>.
          </p>
@@ -78,7 +80,7 @@
        </div>
        <div class="move_right">
          <div class="input_information">
-           <form>
+           <form onsubmit="(event) => {event.preventDefault(); addCoord()}">
              <ul class="input_information_list">
                <li class="input_text">
                  x:
@@ -93,7 +95,7 @@
                    <button
                      id="add_point"
                      type="button"
-                     onclick="addCoord()"
+                     onclick="addCoord(event)"
                      disabled
                    >
                      Add
@@ -111,7 +113,7 @@
          style="position: relative; display: inline-block;"
        >
 
-<canvas
+      <canvas
            onclick="onCanvasClick(event)"
            id="canvas"
            width="800"
