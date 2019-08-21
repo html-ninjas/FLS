@@ -382,6 +382,7 @@ function handleGenerateClick(event) {
   invisibleLink.click();
 }
 
+// TODO: DEBUG
 function generateTestSample(shift) {
   foobar = [
     {
