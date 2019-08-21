@@ -161,9 +161,7 @@ function generateEstimate() {
   if (wrongParams === 1) {
     var time = "Wrong Parameters";
   } else {
-    totalDistance = calculateTotalDistance(calculateLengths(points));
-
-    if (points.length === 1 || points.length === 0) {
+    if (points.length <= 1) {
       var time = 0;
     } else {
       var timeForLine = 0;
