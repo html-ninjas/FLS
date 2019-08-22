@@ -43,7 +43,6 @@ function vectorize(points) {
 
 function calculateInitialAngle(firstPoint, secondPoint) {
   var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
-  console.log(vec);
   if (facing === "right") {
     start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
   } else {
@@ -66,7 +65,7 @@ function calculateAngles(vectors, points) {
       angles.push(angle);
     }
   }
-  return angles.map((item) => item * -1);
+  return angles.map(item => item * -1);
 }
 
 function calculateAngle(vectorA, vectorB, points, pointNumber) {
@@ -179,12 +178,9 @@ function generateEstimate() {
           Math.abs(lengths[i]) / 3.386 / (wheelSize * Math.PI * rot)
         );
       }
-
-      console.log(timeForLine);
       var time = `${timeForLine}s`;
     }
   }
-  console.log(time);
   document.getElementById("time_estimate").innerHTML = time;
 }
 

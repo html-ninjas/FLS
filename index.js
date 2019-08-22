@@ -25,7 +25,8 @@ window.onload = function() {
   clearCanvas(ctx, img);
 };
 
-function addAction(points) {
+function addAction(points, redoList) {
+  console.log("Add action");
   var orderedListSelect = document.querySelector("ol");
   var lastLiSelect =
     orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
@@ -39,7 +40,9 @@ function addAction(points) {
   var lastPoint = points[points.length - 1];
   lastPoint.type = "action";
   redraw(ctx, img, points);
+  console.log(redoList);
   redoList = [];
+  console.log(redoList);
   update(points, redoList);
 }
 
@@ -188,6 +191,8 @@ function clearPath(canvasContext, img) {
   points = [];
   redoList = [];
   textBox = "";
+  document.getElementById("x_coord").value = "";
+  document.getElementById("y_coord").value = "";
   update(points, redoList);
 }
 
@@ -311,9 +316,6 @@ function addCoord(
         actionsYesOrNo: 0,
         speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     } else {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
@@ -322,10 +324,13 @@ function addCoord(
         actionsYesOrNo: 0,
         speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     }
+    addLiElement("orderedList", x, y);
+    redraw(ctx, img, points);
+    redoList = [];
+    x = "";
+    y = "";
+    update(points, redoList);
   }
   generateEstimate();
   generateLists(points, speed);
