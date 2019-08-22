@@ -193,6 +193,7 @@ function clearPath(canvasContext, img) {
   textBox = "";
   document.getElementById("x_coord").value = "";
   document.getElementById("y_coord").value = "";
+  document.getElementById("add_point").setAttribute("disabled", true);
   update(points, redoList);
 }
 
@@ -328,8 +329,10 @@ function addCoord(
     addLiElement("orderedList", x, y);
     redraw(ctx, img, points);
     redoList = [];
-    x = "";
-    y = "";
+
+    document.querySelector("#x_coord").value = "";
+    document.querySelector("#y_coord").value = "";
+    document.querySelector("#add_point").setAttribute("disabled", true);
     update(points, redoList);
   }
   generateEstimate();

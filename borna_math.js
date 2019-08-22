@@ -65,7 +65,7 @@ function calculateAngles(vectors, points) {
       angles.push(angle);
     }
   }
-  return angles.map(item => item * -1);
+  return angles.map((item) => item * -1);
 }
 
 function calculateAngle(vectorA, vectorB, points, pointNumber) {
@@ -184,6 +184,16 @@ function generateEstimate() {
   document.getElementById("time_estimate").innerHTML = time;
 }
 
+const ln = String.fromCharCode(13);
+
+function action(id) {
+  return `3${ln}${id}${ln}`;
+}
+
+function movement(angle, distance, speed) {
+  return `2${ln}${angle}${ln}${distance}${ln}${speed}${ln}`;
+}
+
 function makeTextBox(points, wheelSize, angles, speedOfLine) {
   var axleLength = document.getElementById("axleLength").value;
 
@@ -193,46 +203,33 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
     var numberOfMovements = 0;
   }
 
-  const lineEnding = String.fromCharCode(13);
-
-  textBox = "";
+  var textBox = "";
   textBox += wheelSize;
-  textBox += lineEnding;
+  textBox += ln;
   textBox += axleLength;
-  textBox += lineEnding;
+  textBox += ln;
   textBox += motorsCheck();
-  textBox += lineEnding;
+  textBox += ln;
   textBox += numberOfMovements;
-  textBox += lineEnding;
+  textBox += ln;
 
-  var numberOfActions = 0;
+  let action_id = 0;
 
-  for (var i = 0; i < angles.length; i++) {
-    const angel = angles[i];
-
-    if (points[i].actionsYesOrNo === 1) {
-      numberOfActions += 1;
-      textBox = textBox + "3" + lineEnding;
-      textBox = textBox + numberOfActions + lineEnding;
-      textBox = textBox + "2" + lineEnding;
-      textBox = textBox + angel.toString() + lineEnding;
-      textBox =
-        textBox +
-        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
-        lineEnding;
-      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
-    } else {
-      textBox = textBox + "2" + lineEnding;
-      textBox = textBox + angel.toString() + lineEnding;
-      textBox =
-        textBox +
-        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
-        lineEnding;
-      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
+  points.forEach((point, index) => {
+    if (point.actionsYesOrNo === 1) {
+      // add 3
+      textBox += action(++action_id);
     }
-    if (points[i].actionsYesOrNo === 1) {
+
+    if (index !== points.length - 1) {
+      // 2
+      textBox += movement(
+        angles[index],
+        lengths[index] / 3.386 / (wheelSize * Math.PI),
+        point.speedOfLine
+      );
     }
-  }
+  });
 
   textBox = textBox.replace(/NaN/g, "0");
 
