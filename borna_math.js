@@ -41,31 +41,46 @@ function vectorize(points) {
   return vectors;
 }
 
-function calculateInitialAngle(firstPoint, secondPoint) {
-  var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
-  if (facing == "right") {
-    start =
-      Math.PI / 2 - Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
-  } else {
-    start =
-      Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
+function calculateInitialAngle(points, facing) {
+  const checkForDirection = points[1].direction;
+  const firstPoint = points[0].coordinates;
+  const secondPoint = points[1].coordinates;
+  const vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
+  if (checkForDirection === "forwards") {
+    if (facing === "right") {
+      start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
+    } else {
+      start =
+        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
+    }
+    console.log((start * 180) / Math.PI);
+    return (start * 180) / Math.PI;
+  } else if (checkForDirection === "backwards") {
+    if (facing === "right") {
+      start =
+        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI;
+    } else {
+      start =
+        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+        (Math.PI / 2 - Math.PI);
+    }
+    console.log(((start * 180) / Math.PI) * -1);
+    return ((start * 180) / Math.PI) * -1;
   }
-  return start;
+  console.warn("Invalid checkForDirection yo! Pls fix! ");
 }
 
-function calculateAngles(vectors, points) {
+function calculateAngles(vectors, points, facing) {
+  var angles = [];
   if (points.length > 1) {
-    initialAngle = calculateInitialAngle(
-      points[0].coordinates,
-      points[1].coordinates
-    );
-    var angles = [initialAngle];
+    initialAngle = calculateInitialAngle(points, facing);
+    angles = [initialAngle];
     for (var i = 0; i < vectors.length - 1; i++) {
       var angle = calculateAngle(vectors[i], vectors[i + 1], points, i + 1);
       angles.push(angle);
     }
   }
-  return angles;
+  return angles.map(item => item * -1);
 }
 
 function calculateAngle(vectorA, vectorB, points, pointNumber) {
@@ -132,12 +147,29 @@ function calculateAngle(vectorA, vectorB, points, pointNumber) {
   return finalAngle;
 }
 
+function redefineLastSpeed() {
+  if (document.getElementById("speed").value !== "") {
+    if (points.length > 1) {
+      points[points.length - 2].speedOfLine = document.getElementById(
+        "speed"
+      ).value;
+      points[points.length - 1].speedOfLine = document.getElementById(
+        "speed"
+      ).value;
+      update(points, redoList);
+      generateEstimate();
+    }
+  }
+}
+
 function generateEstimate() {
   var wheelSize = document.getElementById("wheelSize").value;
   var speed = document.getElementById("speed").value;
 
   wheelSize = document.getElementById("wheelSize").value;
   speed = document.getElementById("speed").value;
+
+  lengths = calculateLengths(points);
 
   if (wheelSize === "" || speed === "") {
     var wrongParams = 1;
@@ -161,9 +193,7 @@ function generateEstimate() {
   if (wrongParams === 1) {
     var time = "Wrong Parameters";
   } else {
-    totalDistance = calculateTotalDistance(calculateLengths(points));
-
-    if (points.length === 1 || points.length === 0) {
+    if (points.length <= 1) {
       var time = 0;
     } else {
       var timeForLine = 0;
@@ -175,15 +205,23 @@ function generateEstimate() {
         }
 
         timeForLine += Math.round(
-          lengths[i] / 3.386 / (wheelSize * Math.PI * rot)
+          Math.abs(lengths[i]) / 3.386 / (wheelSize * Math.PI * rot)
         );
-        console.log(timeForLine);
-        var time = `${timeForLine}s`;
       }
+      var time = `${timeForLine}s`;
     }
   }
-  console.log(time);
   document.getElementById("time_estimate").innerHTML = time;
+}
+
+const ln = String.fromCharCode(13);
+
+function action(id) {
+  return `3${ln}${id}${ln}`;
+}
+
+function movement(angle, distance, speed) {
+  return `2${ln}${angle}${ln}${distance}${ln}${speed}${ln}`;
 }
 
 function makeTextBox(points, wheelSize, angles, speedOfLine) {
@@ -195,44 +233,33 @@ function makeTextBox(points, wheelSize, angles, speedOfLine) {
     var numberOfMovements = 0;
   }
 
-  const lineEnding = String.fromCharCode(13);
-
-  textBox = "";
+  var textBox = "";
   textBox += wheelSize;
-  textBox += lineEnding;
+  textBox += ln;
   textBox += axleLength;
-  textBox += lineEnding;
+  textBox += ln;
   textBox += motorsCheck();
-  textBox += lineEnding;
+  textBox += ln;
   textBox += numberOfMovements;
-  textBox += lineEnding;
+  textBox += ln;
 
-  var numberOfActions = 0;
+  let action_id = 0;
 
-  for (var i = 0; i < angles.length; i++) {
-    if (points[i].actionsYesOrNo === 1) {
-      numberOfActions += 1;
-      textBox = textBox + "3" + lineEnding;
-      textBox = textBox + numberOfActions + lineEnding;
-      textBox = textBox + "2" + lineEnding;
-      textBox = textBox + angles[i].toString() + lineEnding;
-      textBox =
-        textBox +
-        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
-        lineEnding;
-      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
-    } else {
-      textBox = textBox + "2" + lineEnding;
-      textBox = textBox + angles[i].toString() + lineEnding;
-      textBox =
-        textBox +
-        (lengths[i] / 3.386 / (wheelSize * Math.PI)).toString() +
-        lineEnding;
-      textBox = textBox + points[i].speedOfLine.toString() + lineEnding;
+  points.forEach((point, index) => {
+    if (point.actionsYesOrNo === 1) {
+      // add 3
+      textBox += action(++action_id);
     }
-    if (points[i].actionsYesOrNo === 1) {
+
+    if (index !== points.length - 1) {
+      // 2
+      textBox += movement(
+        angles[index],
+        lengths[index] / 3.386 / (wheelSize * Math.PI),
+        point.speedOfLine
+      );
     }
-  }
+  });
 
   textBox = textBox.replace(/NaN/g, "0");
 
@@ -252,27 +279,24 @@ function makeTextFile(text) {
   return textFile;
 }
 
-function generateFile(points, wheelSize, speedOfLine) {
+function generateFile(points, wheelSize, speedOfLine, facing) {
   var anchor = document.createElement("a");
-  var orderedListSelect = document.querySelector("ol");
   anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", "fajlnejm2");
+  anchor.setAttribute("download", "outputFile.rtf");
+
   lengths = calculateLengths(points);
   vectors = vectorize(points);
-  angles = calculateAngles(vectors, points);
-  const a = makeTextBox(points, wheelSize, angles, speedOfLine);
+  angles = calculateAngles(vectors, points, facing);
+  const output = makeTextBox(points, wheelSize, angles, speedOfLine);
 
-  anchor.href = makeTextFile(a);
-  orderedListSelect.appendChild(anchor);
+  anchor.href = makeTextFile(output);
+  document.querySelector("body").appendChild(anchor);
 }
 
 function generateLists(points, speed) {
   lengths = calculateLengths(points);
-
   vectors = vectorize(points);
-
-  angles = calculateAngles(vectors, points);
-
+  angles = calculateAngles(vectors, points, facing);
   totalDistance = calculateTotalDistance(lengths);
 
   generateEstimate(speed);

@@ -25,7 +25,7 @@ window.onload = function() {
   clearCanvas(ctx, img);
 };
 
-function addAction(points) {
+function addAction(points, redoList) {
   var orderedListSelect = document.querySelector("ol");
   var lastLiSelect =
     orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
@@ -39,8 +39,29 @@ function addAction(points) {
   var lastPoint = points[points.length - 1];
   lastPoint.type = "action";
   redraw(ctx, img, points);
+
   redoList = [];
+
   update(points, redoList);
+}
+
+function addSpeedToList(points) {
+  const listOfPoints = document.querySelector("ol").children;
+  for (i = 0; i < points.length; i++) {
+    var currentSpeed = points[i].speedOfLine;
+    if (i === points.length - 1) {
+      currentSpeed = "---";
+    }
+
+    const text = listOfPoints[i].innerText;
+    if (text.includes(") ")) {
+      newText = text.split(") ");
+      newText[1] = currentSpeed;
+      listOfPoints[i].innerText = newText.join(") ");
+    } else {
+      listOfPoints[i].innerText = `${text} ${currentSpeed}`;
+    }
+  }
 }
 
 function addLiElement(listId, x, y) {
@@ -49,7 +70,7 @@ function addLiElement(listId, x, y) {
   var newLi = document.createElement("li");
   var newUl = document.createElement("ul");
   newUl.setAttribute("class", "ulNew");
-  var textInLi = document.createTextNode(`(${x},${y}) ${speed}`);
+  var textInLi = document.createTextNode(`(${x},${y})`);
   newLi.appendChild(textInLi);
   newLi.appendChild(newUl);
   getOrderedList.appendChild(newLi);
@@ -188,12 +209,13 @@ function clearPath(canvasContext, img) {
   points = [];
   redoList = [];
   textBox = "";
+  document.getElementById("x_coord").value = "";
+  document.getElementById("y_coord").value = "";
+  document.getElementById("add_point").setAttribute("disabled", true);
   update(points, redoList);
 }
 
 function update(points, redoList) {
-  var speed = document.getElementById("speed").value;
-
   generateEstimate();
 
   if (points.length === 0) {
@@ -229,6 +251,7 @@ function update(points, redoList) {
   } else {
     document.getElementById("create").removeAttribute("disabled", "");
   }
+  addSpeedToList(points);
 }
 
 function openModal() {
@@ -241,6 +264,8 @@ function closeModal() {
   document.querySelector("#clear-modal").style.display = "none";
   document.querySelector("#backdrop-modal").style.display = "none";
   document.querySelector("body").classList.remove("modal-no-scroll");
+
+  startStartingModal();
 }
 function confirmModal() {
   closeModal();
@@ -251,6 +276,12 @@ function closeStartingModal() {
   document.querySelector("#start-modal").style.display = "none";
   document.querySelector("#canvas-overlay").style.display = "none";
   document.querySelector("body").classList.remove("modal-no-scroll");
+}
+
+function startStartingModal() {
+  document.querySelector("#start-modal").style.display = "block";
+  document.querySelector("#canvas-overlay").style.display = "block";
+  document.querySelector("body").classList.add("modal-no-scroll");
 }
 
 function startingUp() {
@@ -288,32 +319,48 @@ function redoButton(redoList, points) {
 }
 
 // TODOOOOOOOOOOO
-function addCoord() {
-  generateEstimate();
-  x = document.getElementById("x_coord").value;
-  y = document.getElementById("y_coord").value;
+function addCoord(
+  event = undefined,
+  x = undefined,
+  y = undefined,
+  shift = undefined,
+  override = false
+) {
+  if (!override) {
+    x = document.getElementById("x_coord").value;
+    y = document.getElementById("y_coord").value;
+    shift = event.shiftKey;
+  }
+
   if (x === "" || y === "") {
   } else {
-    if (event.shiftKey) {
+    if (shift) {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "backwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     } else {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "forwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     }
+    addLiElement("orderedList", x, y);
+    redraw(ctx, img, points);
+    redoList = [];
+
+    document.querySelector("#x_coord").value = "";
+    document.querySelector("#y_coord").value = "";
+    document.querySelector("#add_point").setAttribute("disabled", true);
+    update(points, redoList);
   }
+  generateEstimate();
   generateLists(points, speed);
 }
 
@@ -344,8 +391,8 @@ function coordCheck() {
   }
 }
 
-function scrollSmooth(id) {
-  const section = document.querySelector(`#${id}`);
+function scrollSmooth(id, type = "#") {
+  const section = document.querySelector(`${type}${id}`);
   section.scrollIntoView({ behavior: "smooth" });
 
   setTimeout(() => {
@@ -363,7 +410,40 @@ function handleGenerateClick(event) {
   if (old) {
     old.remove();
   }
-  generateFile(points, wheelSize);
+  generateFile(points, wheelSize, facing);
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
+}
+
+// TODO: DEBUG
+function generateTestSample(shift) {
+  foobar = [
+    {
+      x: 0,
+      y: 0
+    },
+    {
+      x: 50,
+      y: 50
+    },
+    {
+      x: 100,
+      y: 50
+    },
+    {
+      x: 50,
+      y: 0
+    },
+    {
+      x: 100,
+      y: 0
+    }
+  ];
+
+  foobar.forEach((item, index) => {
+    setTimeout(
+      () => addCoord(undefined, item.x, item.y, shift, true),
+      index * 200
+    );
+  });
 }

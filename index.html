@@ -31,16 +31,18 @@
        <li id="AboutUs">
          <a href="about_us.html">About us</a>
        </li>
-       <li id="Help"><a href="#help_section">Help</a></li>
+       <li id="Help"><a onclick="scrollSmooth('help_link')">Help</a></li>
      </ul>
    </nav>
    <hr noshade="" />
    <div class="canvas-wrapper">
      <div id="canvas-overlay" class="canvas-overlay">
        <div id="start-modal" class="modal" style="display: block;">
-         <p><h4>Choose robot starting orientation.</h4></p>
+         <p>
+            <h4>Choose robot starting orientation.</h4>
+          </p>
          <p class="paragraph">
-           You can go and read help <a class="text" onclick="scrollSmooth('help_link')" href="#help_section">here</a>.
+           You can go and read help <a class="text" onclick="scrollSmooth('help_link')"">here</a>.
          </p>
          <button class="button" onclick="startingUp()">Facing up</button>
          <button class="button" onclick="startingRight()">Facing right</button>
@@ -51,7 +53,7 @@
          <button
            id="addAction"
            type="button"
-           onclick="addAction(points)"
+           onclick="addAction(points,redoList)"
            disabled
          >
            Add action
@@ -78,7 +80,7 @@
        </div>
        <div class="move_right">
          <div class="input_information">
-           <form>
+           <form onsubmit="(event) => {event.preventDefault(); addCoord()}">
              <ul class="input_information_list">
                <li class="input_text">
                  x:
@@ -93,7 +95,7 @@
                    <button
                      id="add_point"
                      type="button"
-                     onclick="addCoord()"
+                     onclick="addCoord(event)"
                      disabled
                    >
                      Add
@@ -111,7 +113,7 @@
          style="position: relative; display: inline-block;"
        >
 
-<canvas
+      <canvas
            onclick="onCanvasClick(event)"
            id="canvas"
            width="800"
@@ -149,7 +151,9 @@
                class="input_box"
                id="speed"
                value = 50
-               oninput="generateEstimate()"
+               oninput="generateEstimate(); redefineLastSpeed()"
+               
+               
              />
            </li>
            <li class="input_text" id="align">
@@ -308,7 +312,11 @@
          order from first to last.
          <h4 id="generate">Generate</h4>
          Left-clicking on "Generate" button will generate text file.<br />
-         <button onclick="scrollSmooth('FLS')">Back to top</button>
+         <button onclick="window.scroll({
+          top: 0, 
+          left: 0, 
+          behavior: 'smooth' 
+         });">Back to top</button>
        </div>
      </div>
    </div>
