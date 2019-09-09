@@ -5,6 +5,10 @@ function clearCanvas(canvasContext, img) {
   canvasContext.globalAlpha = 1;
 }
 
+var facing = "up";
+var axleLength = document.getElementById("axleLength").value;
+var backwardsMotors = document.getElementById("backwardsMotors").value;
+var textBox = "";
 var points = [];
 var redoList = [];
 var redoActionList = [];
@@ -21,7 +25,7 @@ window.onload = function() {
   clearCanvas(ctx, img);
 };
 
-function addAction(points) {
+function addAction(points, redoList) {
   var orderedListSelect = document.querySelector("ol");
   var lastLiSelect =
     orderedListSelect.childNodes[orderedListSelect.childElementCount - 1];
@@ -35,11 +39,33 @@ function addAction(points) {
   var lastPoint = points[points.length - 1];
   lastPoint.type = "action";
   redraw(ctx, img, points);
+
   redoList = [];
+
   update(points, redoList);
 }
 
+function addSpeedToList(points) {
+  const listOfPoints = document.querySelector("ol").children;
+  for (i = 0; i < points.length; i++) {
+    var currentSpeed = points[i].speedOfLine;
+    if (i === points.length - 1) {
+      currentSpeed = "---";
+    }
+
+    const text = listOfPoints[i].innerText;
+    if (text.includes(") ")) {
+      newText = text.split(") ");
+      newText[1] = currentSpeed;
+      listOfPoints[i].innerText = newText.join(") ");
+    } else {
+      listOfPoints[i].innerText = `${text} ${currentSpeed}`;
+    }
+  }
+}
+
 function addLiElement(listId, x, y) {
+  var speed = document.getElementById("speed").value;
   var getOrderedList = document.getElementById(listId);
   var newLi = document.createElement("li");
   var newUl = document.createElement("ul");
@@ -47,7 +73,6 @@ function addLiElement(listId, x, y) {
   var textInLi = document.createTextNode(`(${x},${y})`);
   newLi.appendChild(textInLi);
   newLi.appendChild(newUl);
-
   getOrderedList.appendChild(newLi);
 }
 
@@ -108,26 +133,39 @@ function redraw(canvasContext, img, points) {
   drawPoints(canvasContext, points);
 }
 
+function motorsCheck() {
+  if (document.getElementById("backwardsMotors").checked) {
+    var backwardsMotors = 1;
+  } else {
+    var backwardsMotors = 0;
+  }
+  return backwardsMotors;
+}
+
 function onCanvasClick(event) {
   var x = event.x;
   var y = event.y;
 
-  x -= canvasDivisor.offsetLeft;
-  y -= canvasDivisor.offsetTop;
+  x -= canvasDivisor.offsetLeft + 64 + 1.5;
+  y -= canvasDivisor.offsetTop + 85 + 16 - 3;
+
+  var speed = document.getElementById("speed").value;
 
   if (event.shiftKey) {
     points.push({
       coordinates: [x, y],
       direction: "backwards",
       type: "waypoint",
-      actionsYesOrNo: 0
+      actionsYesOrNo: 0,
+      speedOfLine: speed
     });
   } else {
     points.push({
       coordinates: [x, y],
       direction: "forwards",
       type: "waypoint",
-      actionsYesOrNo: 0
+      actionsYesOrNo: 0,
+      speedOfLine: speed
     });
   }
 
@@ -138,8 +176,8 @@ function onCanvasClick(event) {
     Math.floor((y / 3.386) * -1 + 114.29)
   );
   redoList = [];
+  generateLists(points, speed);
   update(points, redoList);
-  generateLists(points);
 }
 
 function undoButton(ctx, img, points, redoActionList) {
@@ -150,7 +188,9 @@ function undoButton(ctx, img, points, redoActionList) {
   if (point.actionsYesOrNo === 1) {
     redoList.push({ type: "emptyAction" });
     points[points.length - 1].actionsYesOrNo = 0;
-    liToKill.childNodes[liToKill.childElementCount].remove();
+    var childElementCount = liToKill.childElementCount;
+    var ulToKill = liToKill.getElementsByClassName("ulNew")[0];
+    ulToKill.childNodes[childElementCount - 1].remove();
   } else {
     var redoElement = points.pop();
     redoList.push(redoElement);
@@ -164,8 +204,14 @@ function undoButton(ctx, img, points, redoActionList) {
 function clearPath(canvasContext, img) {
   clearCanvas(canvasContext, img);
   points.splice(0, points.length);
+
   document.querySelector("ol").innerHTML = "";
+  points = [];
   redoList = [];
+  textBox = "";
+  document.getElementById("x_coord").value = "";
+  document.getElementById("y_coord").value = "";
+  document.getElementById("add_point").setAttribute("disabled", true);
   update(points, redoList);
 }
 
@@ -192,11 +238,20 @@ function update(points, redoList) {
   } else {
     document.getElementById("redo").removeAttribute("disabled");
   }
-  if (points.length >= 0 && points[points.length - 1].actionsYesOrNo === 1) {
+  if (
+    (points.length > 0 && points[points.length - 1].actionsYesOrNo === 1) ||
+    points.length === 0
+  ) {
     document.getElementById("addAction").setAttribute("disabled", "");
   } else {
     document.getElementById("addAction").removeAttribute("disabled");
   }
+  if (points.length === 0) {
+    document.getElementById("create").setAttribute("disabled", "");
+  } else {
+    document.getElementById("create").removeAttribute("disabled", "");
+  }
+  addSpeedToList(points);
 }
 
 function openModal() {
@@ -209,6 +264,8 @@ function closeModal() {
   document.querySelector("#clear-modal").style.display = "none";
   document.querySelector("#backdrop-modal").style.display = "none";
   document.querySelector("body").classList.remove("modal-no-scroll");
+
+  startStartingModal();
 }
 function confirmModal() {
   closeModal();
@@ -221,17 +278,21 @@ function closeStartingModal() {
   document.querySelector("body").classList.remove("modal-no-scroll");
 }
 
+function startStartingModal() {
+  document.querySelector("#start-modal").style.display = "block";
+  document.querySelector("#canvas-overlay").style.display = "block";
+  document.querySelector("body").classList.add("modal-no-scroll");
+}
+
 function startingUp() {
   closeStartingModal();
   clearPath(ctx, img);
-  var facing = "up";
-  console.log(facing);
+  facing = "up";
 }
 function startingRight() {
   closeStartingModal();
   clearPath(ctx, img);
-  var facing = "right";
-  console.log(facing);
+  facing = "right";
 }
 
 function redoButton(redoList, points) {
@@ -258,31 +319,49 @@ function redoButton(redoList, points) {
 }
 
 // TODOOOOOOOOOOO
-function addCoord() {
-  x = document.getElementById("x_coord").value;
-  y = document.getElementById("y_coord").value;
+function addCoord(
+  event = undefined,
+  x = undefined,
+  y = undefined,
+  shift = undefined,
+  override = false
+) {
+  if (!override) {
+    x = document.getElementById("x_coord").value;
+    y = document.getElementById("y_coord").value;
+    shift = event.shiftKey;
+  }
+
   if (x === "" || y === "") {
   } else {
-    if (event.shiftKey) {
+    if (shift) {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "backwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     } else {
       points.push({
         coordinates: [Math.floor(3.386 * x), Math.floor(387 - 3.386 * y)],
         direction: "forwards",
-        type: "waypoint"
+        type: "waypoint",
+        actionsYesOrNo: 0,
+        speedOfLine: document.querySelector("#speed").value
       });
-      addLiElement("orderedList", x, y);
-      redraw(ctx, img, points);
-      update(points, redoList);
     }
+    addLiElement("orderedList", x, y);
+    redraw(ctx, img, points);
+    redoList = [];
+
+    document.querySelector("#x_coord").value = "";
+    document.querySelector("#y_coord").value = "";
+    document.querySelector("#add_point").setAttribute("disabled", true);
+    update(points, redoList);
   }
+  generateEstimate();
+  generateLists(points, speed);
 }
 
 function coordCheck() {
@@ -291,244 +370,29 @@ function coordCheck() {
 
   if (x == "" || y == "") {
     document.getElementById("add_point").setAttribute("disabled", "");
+    document.getElementById("y_coord").setAttribute("class", "add-point-error");
+    document.getElementById("x_coord").setAttribute("class", "add-point-error");
   } else {
     if (x <= 236 && y <= 114) {
       if (x >= 0 && y >= 0) {
         document.getElementById("add_point").removeAttribute("disabled");
+        document.getElementById("y_coord").setAttribute("class", "input_box");
+        document.getElementById("x_coord").setAttribute("class", "input_box");
       }
     } else {
       document.getElementById("add_point").setAttribute("disabled", "");
+      document
+        .getElementById("y_coord")
+        .setAttribute("class", "add-point-error");
+      document
+        .getElementById("x_coord")
+        .setAttribute("class", "add-point-error");
     }
   }
 }
 
-var axleLength = document.getElementById("axleLength").value;
-var backwardsMotors = document.getElementById("backwardsMotors").value;
-
-function calculateLength(pointA, pointB) {
-  var xdistance = pointB[0] - pointA[0];
-  var ydistance = pointB[1] - pointA[1];
-  var length = Math.sqrt(xdistance ** 2 + ydistance ** 2);
-  return length;
-}
-
-function calculateLengths(points) {
-  var lengths = [];
-  for (var i = 0; i < points.length - 1; i++) {
-    if (points[i + 1].direction === "forwards") {
-      lengths.push(
-        calculateLength(points[i].coordinates, points[i + 1].coordinates)
-      );
-    } else {
-      lengths.push(
-        calculateLength(points[i].coordinates, points[i + 1].coordinates)
-      );
-    }
-  }
-  return lengths;
-}
-
-function calculateTotalDistance(lengths) {
-  var totalDistance = 0;
-  if (points.length > 0) {
-    for (var i = 0; i < lengths.length; i++) {
-      totalDistance += Math.abs(lengths[i]);
-    }
-  }
-  return totalDistance;
-}
-
-function vectorize(points) {
-  var vectors = [];
-  for (var i = 0; i < points.length - 1; i++) {
-    vectors.push([
-      points[i + 1].coordinates[0] - points[i].coordinates[0],
-      points[i + 1].coordinates[1] - points[i].coordinates[1]
-    ]);
-  }
-  return vectors;
-}
-
-function calculateInitialAngle(firstPoint, secondPoint) {
-  var vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
-  if (document.getElementById("startValue").value == "right") {
-    start =
-      Math.PI / 2 - Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
-  } else {
-    start =
-      Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
-  }
-  return start;
-}
-
-function calculateAngles(vectors, points) {
-  var angles = [];
-  for (var i = 0; i < vectors.length - 1; i++) {
-    var angle = calculateAngle(vectors[i], vectors[i + 1], points, i + 1);
-    angles.push(angle);
-  }
-  return angles;
-}
-
-function calculateAngle(vectorA, vectorB, points, pointNumber) {
-  if (points[pointNumber].direction === points[pointNumber + 1].direction) {
-    if (vectorA[1] < 0) {
-      vectorAngle1 =
-        2 * Math.PI -
-        Math.acos(vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2));
-    } else {
-      vectorAngle1 = Math.acos(
-        vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2)
-      );
-    }
-    if (vectorB[1] < 0) {
-      vectorAngle2 =
-        2 * Math.PI -
-        Math.acos(vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2));
-    } else {
-      vectorAngle2 = Math.acos(
-        vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2)
-      );
-    }
-    var finalAngle = vectorAngle2 - vectorAngle1;
-    if (Math.abs(finalAngle) > Math.PI) {
-      if (finalAngle > 0) {
-        finalAngle -= 2 * Math.PI;
-      } else {
-        finalAngle += 2 * Math.PI;
-      }
-    }
-  } else {
-    vectorB[0] = -vectorB[0];
-    vectorB[1] = -vectorB[1];
-    if (vectorA[1] < 0) {
-      vectorAngle1 =
-        2 * Math.PI -
-        Math.acos(vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2));
-    } else {
-      vectorAngle1 = Math.acos(
-        vectorA[0] / Math.sqrt(vectorA[0] ** 2 + vectorA[1] ** 2)
-      );
-    }
-    if (vectorB[1] < 0) {
-      vectorAngle2 =
-        2 * Math.PI -
-        Math.acos(vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2));
-    } else {
-      vectorAngle2 = Math.acos(
-        vectorB[0] / Math.sqrt(vectorB[0] ** 2 + vectorB[1] ** 2)
-      );
-    }
-    var finalAngle = vectorAngle2 - vectorAngle1;
-    if (Math.abs(finalAngle) > Math.PI) {
-      if (finalAngle > 0) {
-        finalAngle -= 2 * Math.PI;
-      } else {
-        finalAngle += 2 * Math.PI;
-      }
-    }
-    vectorB[0] = -vectorB[0];
-    vectorB[1] = -vectorB[1];
-  }
-  finalAngle = (finalAngle * 180) / Math.PI;
-  return finalAngle;
-}
-
-function makeTextFile(text) {
-  var data = new Blob([text], { type: "text/plain" });
-  var textFile = null;
-
-  if (textFile !== null) {
-    window.URL.revokeObjectURL(textFile);
-  }
-
-  textFile = window.URL.createObjectURL(data);
-
-  return textFile;
-}
-
-function generateFile(textBox) {
-  var anchor = document.createElement("a");
-  var orderedListSelect = document.querySelector("ol");
-  anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", true);
-  anchor.href = makeTextFile(textBox);
-  orderedListSelect.appendChild(anchor);
-}
-
-function generateLists(points) {
-  lengths = calculateLengths(points);
-
-  vectors = vectorize(points);
-
-  angles = calculateAngles(vectors, points);
-
-  totalDistance = calculateTotalDistance(lengths);
-  var numberOfMovements = points.length - 1;
-
-  var textBox = "";
-
-  textBox += wheelSize;
-  textBox += "\n";
-  textBox += speed;
-  textBox += "\n";
-  textBox += axleLength;
-  textBox += "\n";
-  textBox += backwardsMotors;
-  textBox += "\n";
-  textBox += numberOfMovements;
-  textBox += "\n";
-
-  console.log(textBox);
-
-  var start = "pocetnikut";
-
-  if (lengths.lenght > 0) {
-    textBox = textBox + "2" + "\n";
-    textBox = textBox + start.toString() + "\n";
-    textBox = textBox + lengths[0].toString() + "\n";
-
-    for (var i = 0; i < lengths.length - 1; i++) {
-      textBox = textBox + "2" + "\n";
-      textBox = textBox + angles[i].toString() + "\n";
-      textBox = textBox + lengths[i + 1].toString() + "\n";
-    }
-  }
-  generateFile(textBox);
-}
-
-function generateEstimate() {
-  var wheelSize = document.getElementById("wheelSize").value;
-  var speed = document.getElementById("speed").value;
-
-  if (wheelSize.length == 0 || speed.length == 0) {
-    var time = "Wrong params";
-  } else {
-    totalDistance = calculateTotalDistance(calculateLengths(points));
-
-    console.log(totalDistance);
-
-    if (speed >= 80) {
-      var rot = 2.24;
-    } else {
-      var rot = 0.027625 * speed;
-    }
-
-    if (points.length === 1) {
-      var time = 0;
-    } else {
-      var number =
-        Math.round(
-          (totalDistance / 3.386 / (wheelSize * Math.PI * rot) + 0.5) * 10
-        ) / 10;
-      var time = `${number}s`;
-    }
-  }
-  document.getElementById("time_estimate").innerHTML = time;
-}
-
-function scrollSmooth(id) {
-  const section = document.querySelector(`#${id}`);
+function scrollSmooth(id, type = "#") {
+  const section = document.querySelector(`${type}${id}`);
   section.scrollIntoView({ behavior: "smooth" });
 
   setTimeout(() => {
@@ -540,6 +404,46 @@ function scrollSmooth(id) {
 }
 
 function handleGenerateClick(event) {
+  var wheelSize = document.getElementById("wheelSize").value;
+  var old = document.getElementById("invisibleLink");
+
+  if (old) {
+    old.remove();
+  }
+  generateFile(points, wheelSize, facing);
   var invisibleLink = document.getElementById("invisibleLink");
   invisibleLink.click();
+}
+
+// TODO: DEBUG
+function generateTestSample(shift) {
+  foobar = [
+    {
+      x: 0,
+      y: 0
+    },
+    {
+      x: 50,
+      y: 50
+    },
+    {
+      x: 100,
+      y: 50
+    },
+    {
+      x: 50,
+      y: 0
+    },
+    {
+      x: 100,
+      y: 0
+    }
+  ];
+
+  foobar.forEach((item, index) => {
+    setTimeout(
+      () => addCoord(undefined, item.x, item.y, shift, true),
+      index * 200
+    );
+  });
 }

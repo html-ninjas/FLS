@@ -45,11 +45,11 @@ ul {
 .navbar_links li a {
   transition: all 0.5s ease 0s;
 }
-.navbar_links li a:hover,
+/* .navbar_links li a:hover,
 .navbar_links li a.active {
   border-bottom: 3px solid black;
   line-height: 1.78px;
-}
+} */
 #Help {
   margin-left: auto;
   margin-right: 0px;
@@ -165,7 +165,7 @@ body {
   align-items: center;
 }
 .input_box {
-  width: 52px;
+  width: 56px;
   height: 24px;
   border-radius: 4px;
   border: solid 1px #000000;
@@ -302,4 +302,42 @@ h3 {
   width: fit-content;
   border: 1px solid #ffffff;
   margin: 2px;
+}
+
+.add-point-error {
+  width: 56px;
+  height: 24px;
+  border-radius: 4px;
+  border: solid 1px rgb(255, 80, 80);
+  background-color: #d8d8d8;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  outline: none;
+  margin-right: 16px;
+  margin-left: 8px;
+  padding: 5px 8px;
+}
+
+.navbar_links a {
+  position: relative;
+}
+
+.navbar_links a::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 100%;
+  bottom: -3px;
+  left: 50%;
+  right: 50%;
+  background-color: #000000;
+  transition-duration: 0.3s;
+}
+
+.navbar_links a:hover::after,
+a.active:after {
+  left: 0;
+  right: 0;
+  transition-duration: 0.3s;
 }
