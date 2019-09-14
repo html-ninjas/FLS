@@ -19,7 +19,7 @@ var output = "";
 var img = new Image();
 
 img.src =
-  "https://raw.githubusercontent.com/html-ninjas/FLS/master/matcropped.jpg";
+  "https://raw.githubusercontent.com/html-ninjas/FLS/master/Mat2020.jpg";
 
 window.onload = function() {
   clearCanvas(ctx, img);
