@@ -129,6 +129,7 @@ button[disabled] {
   display: block;
   z-index: 100;
   cursor: not-allowed;
+  border-radius: 8px;
 }
 
 .modal {

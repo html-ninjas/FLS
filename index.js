@@ -53,13 +53,13 @@ function addSpeedToList(points) {
       currentSpeed = "---";
     }
 
-    const text = listOfPoints[i].innerText;
+    const text = listOfPoints[i].firstChild.innerText;
     if (text.includes(") ")) {
       newText = text.split(") ");
       newText[1] = currentSpeed;
-      listOfPoints[i].innerText = newText.join(") ");
+      listOfPoints[i].firstChild.innerText = newText.join(") ");
     } else {
-      listOfPoints[i].innerText = `${text} ${currentSpeed}`;
+      listOfPoints[i].firstChild.innerText = `${text} ${currentSpeed}`;
     }
   }
 }
@@ -71,7 +71,9 @@ function addLiElement(listId, x, y) {
   var newUl = document.createElement("ul");
   newUl.setAttribute("class", "ulNew");
   var textInLi = document.createTextNode(`(${x},${y})`);
-  newLi.appendChild(textInLi);
+  var coords = document.createElement("p");
+  coords.appendChild(textInLi);
+  newLi.appendChild(coords);
   newLi.appendChild(newUl);
   getOrderedList.appendChild(newLi);
 }
@@ -189,7 +191,7 @@ function undoButton(ctx, img, points, redoActionList) {
     redoList.push({ type: "emptyAction" });
     points[points.length - 1].actionsYesOrNo = 0;
     var childElementCount = liToKill.childElementCount;
-    var ulToKill = liToKill.getElementsByClassName("ulNew")[0];
+    var ulToKill = liToKill.lastChild;
     ulToKill.childNodes[childElementCount - 1].remove();
   } else {
     var redoElement = points.pop();
@@ -256,32 +258,27 @@ function update(points, redoList) {
 
 function openModal() {
   document.querySelector("#clear-modal").style.display = "block";
-  document.querySelector("#backdrop-modal").style.display = "block";
-  document.querySelector("body").classList.add("modal-no-scroll");
+  document.querySelector("#canvas-overlay").style.display = "block";
 }
 
 function closeModal() {
   document.querySelector("#clear-modal").style.display = "none";
-  document.querySelector("#backdrop-modal").style.display = "none";
-  document.querySelector("body").classList.remove("modal-no-scroll");
-
-  startStartingModal();
+  document.querySelector("#canvas-overlay").style.display = "none";
 }
 function confirmModal() {
   closeModal();
   clearPath(ctx, img);
+  startStartingModal();
 }
 
 function closeStartingModal() {
   document.querySelector("#start-modal").style.display = "none";
   document.querySelector("#canvas-overlay").style.display = "none";
-  document.querySelector("body").classList.remove("modal-no-scroll");
 }
 
 function startStartingModal() {
   document.querySelector("#start-modal").style.display = "block";
   document.querySelector("#canvas-overlay").style.display = "block";
-  document.querySelector("body").classList.add("modal-no-scroll");
 }
 
 function startingUp() {
@@ -311,14 +308,17 @@ function redoButton(redoList, points) {
     UlSelect.appendChild(liInUl);
   } else {
     points.push(current);
-    addLiElement("orderedList", current.coordinates[0], current.coordinates[1]);
+    addLiElement(
+      "orderedList",
+      Math.floor(current.coordinates[0] / 3.386),
+      Math.floor((current.coordinates[1] / 3.386) * -1 + 114.29)
+    );
   }
 
   redraw(ctx, img, points);
   update(points, redoList);
 }
 
-// TODOOOOOOOOOOO
 function addCoord(
   event = undefined,
   x = undefined,

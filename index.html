@@ -12,13 +12,6 @@
    <meta charset="UTF-8" />
  </head>
  <body>
-   <div id="backdrop-modal" class="backdrop"></div>
-   <div id="clear-modal" class="modal" style="display: none;">
-     <p>Are you sure you want to clear route?</p>
-     <p class="paragraph">You can't undo this action.</p>
-     <button class="button" onclick="confirmModal()">Yes</button>
-     <button class="button" onclick="closeModal()">No</button>
-   </div>
    <nav class="stroke">
      <ul class="navbar_links">
        <li id="FLS">
@@ -35,7 +28,15 @@
      </ul>
    </nav>
    <hr noshade="" />
+   
    <div class="canvas-wrapper">
+      <div id="backdrop-modal" class="backdrop"></div>
+      <div id="clear-modal" class="modal" style="display: none;">
+        <p>Are you sure you want to clear route?</p>
+        <p class="paragraph">You can't undo this action.</p>
+        <button class="button" onclick="confirmModal()">Yes</button>
+        <button class="button" onclick="closeModal()">No</button>
+      </div>
      <div id="canvas-overlay" class="canvas-overlay">
        <div id="start-modal" class="modal" style="display: block;">
          <p>
@@ -44,6 +45,7 @@
          <p class="paragraph">
            You can go and read help <a class="text" onclick="scrollSmooth('help_link')"">here</a>.
          </p>
+         
          <button class="button" onclick="startingUp()">Facing up</button>
          <button class="button" onclick="startingRight()">Facing right</button>
        </div>
