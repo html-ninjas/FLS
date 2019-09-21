@@ -192,7 +192,7 @@ function undoButton(ctx, img, points, redoActionList) {
     points[points.length - 1].actionsYesOrNo = 0;
     var childElementCount = liToKill.childElementCount;
     var ulToKill = liToKill.lastChild;
-    ulToKill.childNodes[childElementCount - 1].remove();
+    ulToKill.firstChild.remove();
   } else {
     var redoElement = points.pop();
     redoList.push(redoElement);
