@@ -54,7 +54,7 @@ function calculateInitialAngle(points, facing) {
         Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
     }
     console.log((start * 180) / Math.PI);
-    return (start * 180) / Math.PI;
+    return ((start * 180) / Math.PI) * -1;
   } else if (checkForDirection === "backwards") {
     if (facing === "right") {
       start =
@@ -65,7 +65,7 @@ function calculateInitialAngle(points, facing) {
         (Math.PI / 2 - Math.PI);
     }
     console.log(((start * 180) / Math.PI) * -1);
-    return ((start * 180) / Math.PI) * -1;
+    return (start * 180) / Math.PI;
   }
   console.warn("Invalid checkForDirection yo! Pls fix! ");
 }
