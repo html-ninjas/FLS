@@ -48,24 +48,80 @@ function calculateInitialAngle(points, facing) {
   const vec = [secondPoint[0] - firstPoint[0], secondPoint[1] - firstPoint[1]];
   if (checkForDirection === "forwards") {
     if (facing === "right") {
-      start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
+      if (vec[1] <= 0) {
+        start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
+      } else {
+        start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) * -1;
+      }
     } else {
-      start =
-        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI / 2;
+      if (vec[1] <= 0) {
+        start =
+          Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+          Math.PI / 2;
+      } else {
+        if (vec[0] > 0) {
+          start =
+            (Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) +
+              Math.PI / 2) *
+            -1;
+        } else {
+          start =
+            (Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) +
+              Math.PI / 2 -
+              Math.PI * 2) *
+            -1;
+        }
+      }
     }
-    console.log((start * 180) / Math.PI);
+    console.log((start * 180) / Math.PI) * -1;
+    console.log(facing);
     return ((start * 180) / Math.PI) * -1;
   } else if (checkForDirection === "backwards") {
     if (facing === "right") {
-      start =
-        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) - Math.PI;
+      if (vec[1] <= 0) {
+        start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2));
+        if (vec[0] <= 0) {
+          start = start - Math.PI;
+        } else {
+          start = start - Math.PI;
+        }
+      } else {
+        start = Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) * -1;
+        if (vec[0] <= 0) {
+          start = start + Math.PI;
+        } else {
+          start = start + Math.PI;
+        }
+      }
     } else {
-      start =
-        Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
-        (Math.PI / 2 - Math.PI);
+      if (vec[1] <= 0) {
+        if (vec[0] <= 0) {
+          start =
+            Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+            Math.PI / 2 -
+            Math.PI;
+        } else {
+          start =
+            Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+            Math.PI / 2 +
+            Math.PI;
+        }
+      } else {
+        if (vec[0] <= 0) {
+          start =
+            (Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+              Math.PI / 2) *
+            -1;
+        } else {
+          start =
+            (Math.acos(vec[0] / Math.sqrt(vec[0] ** 2 + vec[1] ** 2)) -
+              Math.PI / 2) *
+            -1;
+        }
+      }
     }
-    console.log(((start * 180) / Math.PI) * -1);
-    return (start * 180) / Math.PI;
+    console.log((start * 180) / Math.PI);
+    return ((start * 180) / Math.PI) * -1;
   }
   console.warn("Invalid checkForDirection yo! Pls fix! ");
 }
@@ -279,10 +335,10 @@ function makeTextFile(text) {
   return textFile;
 }
 
-function generateFile(points, wheelSize, speedOfLine, facing) {
+function generateFile(points, wheelSize, facing, speedOfLine) {
   var anchor = document.createElement("a");
   anchor.setAttribute("id", "invisibleLink");
-  anchor.setAttribute("download", "outputFile.rtf");
+  anchor.setAttribute("download", "FLSFile.rtf");
 
   lengths = calculateLengths(points);
   vectors = vectorize(points);
